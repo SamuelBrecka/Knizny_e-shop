@@ -1,5 +1,5 @@
 
-
+/*index.html*/
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
@@ -43,6 +43,7 @@ nav ul li a {
         border-radius: 5px;
     }
 }
+/* netusim aky error mi tu ukazuje*/
 
 .home {
     color: black;
@@ -126,7 +127,7 @@ a:hover {
 
 
 
-
+/*kinhy*/
 .container-book {
     display: flex;
     flex-direction: column;
@@ -184,6 +185,75 @@ a:hover {
     }
 }
 
+
+
+
+/*info*/
+.intro {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: white;
+    margin: 20px auto;
+    max-width: 1200px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.intro .text {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.intro .image img {
+    height: auto;
+    border-radius: 10px;
+    max-width: 500px;
+}
+
+.benefits {
+    text-align: center;
+    margin: 40px 20px;
+}
+
+.benefits ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.benefits li {
+    margin: 10px 0;
+    font-size: 18px;
+    background-color: #007BFF;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+@media (max-width: 760px) {
+    .intro {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .intro .text {
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+
+    .intro .image img {
+        max-width: 100%;
+    }
+
+    .benefits ul {
+        padding: 0 10px;
+    }
+
+    .benefits li {
+        font-size: 16px;
+    }
+}
 
 
 
