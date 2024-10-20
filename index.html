@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
-    <title>Title</title>
+    <title>PageKeep</title>
 </head>
 <body>
 <header>
@@ -14,64 +14,59 @@
                 <li><a href="#home">Domov</a></li>
                 <li><a href="#books">Knihy</a></li>
                 <li><a href="#about">O nás</a></li>
-                <li><a href="#contact">Kontakt</a></li>
             </ul>
         </nav>
     </div>
 </header>
 
-<section id="home" class="hero">
-    <div class="container">
-        <h2>Vitajte v našom knižnom eshope!</h2>
-        <p>Objavte svoju ďalšiu obľúbenú knihu.</p>
-    </div>
-</section>
+<main class="container1">
+    <section id="home" class="home">
+        <div class="container">
+            <h2>Vitajte v našom knižnom eshope!</h2>
+            <p>Objavte svoju ďalšiu obľúbenú knihu.</p>
+        </div>
+    </section>
 
-<section id="books" class="books">
-    <div class="container">
-        <h2>Naše Knihy</h2>
-        <div class="book-grid">
-            <div class="book">
-                <img src="res/dune.jpg" alt="Kniha 1">
-                <h3>Kniha 1</h3>
-                <p>Autor: Ján Novák</p>
-                <p>Cena: 12,99 €</p>
-            </div>
-            <div class="book">
-                <img src="res/metro.jpeg" alt="Kniha 2">
-                <h3>Kniha 2</h3>
-                <p>Autor: Anna Kováčová</p>
-                <p>Cena: 15,99 €</p>
-            </div>
-            <div class="book">
-                <img src="res/wiedzmin.jpeg" alt="Kniha 3">
-                <h3>Kniha 3</h3>
-                <p>Autor: Peter Horák</p>
-                <p>Cena: 9,99 €</p>
+    <section class="books" id="books">
+        <div class="container">
+            <h2>Naše Knihy</h2>
+            <div class="book-grid">
+                <a href="duna.html" class="book">
+                    <img src="res/dune.jpg" alt="Kniha 1">
+                    <h3>Duna</h3>
+                    <p>Autor: Frank Herbert</p>
+                    <p>Cena: 12,99 €</p>
+                </a>
+                <a href="metro.html" class="book">
+                    <img src="res/metro.jpeg" alt="Kniha 2">
+                    <h3>Metro 2035</h3>
+                    <p>Autor: Dmitry Glukhovsky</p>
+                    <p>Cena: 15,99 €</p>
+                </a>
+                <a href="zaklinac.html" class="book">
+                    <img src="res/wiedzmin.jpeg" alt="Kniha 3">
+                    <h3>Zaklínač</h3>
+                    <p>Autor: Andrzej Sapkowski</p>
+                    <p>Cena: 9,99 €</p>
+                </a>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<section id="about" class="about">
-    <div class="container">
-        <h2>O nás</h2>
-        <p>Sme váš spoľahlivý partner pri výbere kníh. Ponúkame široký výber kníh pre každého čitateľa.</p>
-    </div>
-</section>
+    <section id="about" class="about">
+        <div class="container">
+            <h2>O nás</h2>
+            <p>Sme váš spoľahlivý partner pri výbere kníh. Ponúkame široký výber kníh pre každého čitateľa.</p>
+        </div>
+    </section>
 
-<section id="contact" class="contact">
-    <div class="container">
-        <h2>Kontakt</h2>
-        <p>Email: info@kniznyeshop.sk</p>
-        <p>Telefón: +421 123 456 789</p>
-    </div>
-</section>
-
-<footer>
-    <div class="container">
-        <p>&copy; 2024 Knižný Eshop. Všetky práva vyhradené.</p>
-    </div>
-</footer>
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Kontakt</h2>
+            <p>Email: info@kniznyeshop.sk</p>
+            <p>Telefón: +421 123 456 789</p>
+        </div>
+    </section>
+</main>
 </body>
 </html>
