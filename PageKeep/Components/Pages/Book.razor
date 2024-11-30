@@ -1,0 +1,49 @@
+﻿@page "/book/{BookId:int}" 
+@using PageKeep.Models
+
+@code {
+    [Parameter]
+    public int BookId { get; set; }
+
+    private BookModel CurrentBook;
+
+    protected override void OnParametersSet()
+    {
+        // Simulácia načítania údajov knihy (toto môžete nahradiť volaním API alebo DB dotazom)
+        CurrentBook = GetBookById(BookId);
+    }
+
+    private BookModel GetBookById(int id)
+    {
+        // Ukážkový zoznam kníh
+        var books = new List<BookModel>
+        {
+            new BookModel { Id = 1, Title = "Duna", Author = "Frank Herbert", Price = 12.99m, Image = "res/duneUp.jpg", Description = "Duna je sci-fi séria románov..." },
+            new BookModel { Id = 2, Title = "Metro 2035", Author = "Dmitry Glukhovsky", Price = 15.99m, Image = "res/metroUp.jpeg", Description = "Metro 2035 je temný post-apokalyptický príbeh..." },
+            new BookModel { Id = 3, Title = "Zaklinac", Author = "Andrzej Sapkowski", Price = 9.99m, Image = "res/wiedzminUp.jpeg", Description = "Zaklínač je literárny fantasy cyklus poľského spisovateľa Andrzeja Sapkowského. Základom cyklu..." }
+
+        };
+
+        return books.Find(book => book.Id == id) ?? new BookModel();
+    }
+}
+
+<div class="container-book">
+    <div class="image-container">
+        <img src="@CurrentBook.Image" alt="@CurrentBook.Title">
+    </div>
+    <div class="text-container">
+        <h2>@CurrentBook.Title</h2>
+        <p>Autor: @CurrentBook.Author</p>
+        <p>@CurrentBook.Description</p>
+        <button class="buy-button">Kúpiť za @CurrentBook.Price €</button>
+    </div>
+</div>
+
+<section id="contact" class="contact">
+    <div class="container">
+        <h2>Kontakt</h2>
+        <p>Email: info@kniznyeshop.sk</p>
+        <p>Telefón: +421 123 456 789</p>
+    </div>
+</section>
