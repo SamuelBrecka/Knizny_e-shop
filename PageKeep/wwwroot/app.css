@@ -45,6 +45,54 @@ nav ul li a:hover {
         border-radius: 5px;
 }
 
+/* NavigaËn˝ kontajner */
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f4f4f4;
+    border-bottom: 1px solid #ccc;
+}
+
+/* Zoznam navig·cie */
+.nav-menu {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+    margin: 0;
+    padding: 0;
+}
+
+    /* Poloûky navig·cie */
+    .nav-menu li a {
+        text-decoration: none;
+        font-size: 16px;
+        color: #333;
+        padding: 5px;
+    }
+
+        .nav-menu li a:hover {
+            background-color: #ddd;
+            border-radius: 5px;
+        }
+
+/* Sekcia uûÌvateæsk˝ch inform·ciÌ */
+.user-info {
+    text-align: right; /* Zarovn·va text doprava */
+    font-size: 14px;
+    color: #007BFF;
+    line-height: 1.5; /* Zv˝öi vzdialenosù medzi riadkami */
+    white-space: pre-wrap; /* Povolenie zalomenia textu na novÈ riadky */
+}
+
+    .user-info span {
+        display: block;
+        font-weight: bold;
+    }
+
+
+
 .home {
     color: black;
     height: 400px;
@@ -252,59 +300,87 @@ a:hover {
     }
 }
 
-/*login*/
-.container2 {
-    margin: 50px auto;
-    max-width: 400px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    background-color: #f9f9f9;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
 
-.container2 h2 {
-    margin-bottom: 20px;
-    color: #333;
-}
-
-.login-form {
+/* äpecifickÈ öt˝ly pre login str·nku */
+.login-page {
     display: flex;
-    flex-direction: column;
-    gap: 15px;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Zarovnanie na stred str·nky */
+    background-color: #f4f4f9; /* Jemn· svetl· farba */
+    margin: 0;
 }
 
-.login-form label {
-    font-weight: bold;
-    color: #555;
-}
-
-.login-form input {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+/* Kontajner pre login box */
+.login-box {
     width: 100%;
+    max-width: 400px; /* Maxim·lna öÌrka pre login okno */
+    padding: 20px 30px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
-.login-form input:focus {
-    border-color: #007bff;
-    outline: none;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-}
+    /* Nadpis */
+    .login-box h2 {
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 20px;
+    }
 
-.btn-submit {
-    padding: 10px;
-    font-size: 16px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
+    /* Formul·rovÈ skupiny */
+    .login-box .form-group {
+        margin-bottom: 15px;
+        text-align: left;
+    }
 
-.btn-submit:hover {
-    background-color: #0056b3;
-}
+        .login-box .form-group label {
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 5px;
+            display: block;
+        }
 
+    .login-box .form-control {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+
+        .login-box .form-control:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+    /* Login button */
+    .login-box .btn-primary {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        text-transform: uppercase;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 15px;
+    }
+
+        .login-box .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+/* ResponzÌvny dizajn */
+@media (max-width: 768px) {
+    .login-box {
+        padding: 15px 20px;
+    }
+}
