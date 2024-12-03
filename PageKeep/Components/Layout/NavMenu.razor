@@ -1,30 +1,29 @@
-﻿<div class="container1">
-    <h1>Knižný Eshop</h1>
+﻿<div class="header-container">
+    <div class="title-bar">
+        <h1>Knižný Eshop</h1>
+        <div class="auth-links">
+            <AuthorizeView>
+                <Authorized>
+                    <a href="/logout">Logout</a>
+                    <div class="user-message">@message</div>
+                </Authorized>
+                <NotAuthorized>
+                    <a href="/login">Login</a>
+                </NotAuthorized>
+            </AuthorizeView>
+        </div>
+    </div>
     <nav class="nav-container">
         <ul class="nav-menu">
             <li><a href="#home">Domov</a></li>
             <li><a href="#books">Knihy</a></li>
             <li><a href="info.html">O nás</a></li>
-            <AuthorizeView>
-                <Authorized>
-                    <li><a href="/logout">Logout</a></li>
-                </Authorized>
-                <NotAuthorized>
-                    <li><a href="/login">Login</a></li>
-                </NotAuthorized>
-            </AuthorizeView>
         </ul>
-        <div class="user-info">
-            <span>@message</span>
-        </div>
     </nav>
 </div>
 
 @code {
     private string? message;
-
-    [Inject]
-    private NavigationManager navManager { get; set; }
 
     [CascadingParameter]
     private Task<AuthenticationState> authStateTask { get; set; }

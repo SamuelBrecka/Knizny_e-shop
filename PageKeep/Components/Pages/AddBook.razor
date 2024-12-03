@@ -1,0 +1,75 @@
+﻿@page "/add-book"
+@using PageKeep.Models
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using PageKeep.dbcontext
+@inject NavigationManager NavManager
+@inject AppDbContext DbContext
+
+<AuthorizeView Roles="Admin" Context="authContext">
+    <Authorized Context="authorizedContext">
+        <div class="add-book-container">
+            <h2>Pridať knihu</h2>
+            <EditForm Model="@bookModel" OnValidSubmit="BookAdd" FormName="BookAddForm" Context="editFormContext">
+                <ValidationSummary />
+
+                <div class="form-group">
+                    <label for="title">Názov</label>
+                    <InputText id="title" class="form-control" @bind-Value="bookModel.Title" placeholder="Zadajte názov knihy" />
+                    <ValidationMessage For="() => bookModel.Title" />
+                </div>
+
+                <div class="form-group">
+                    <label for="author">Autor</label>
+                    <InputText id="author" class="form-control" @bind-Value="bookModel.Author" placeholder="Zadajte meno autora" />
+                    <ValidationMessage For="() => bookModel.Author" />
+                </div>
+
+                <div class="form-group">
+                    <label for="price">Cena</label>
+                    <InputNumber id="price" class="form-control" @bind-Value="bookModel.Price" placeholder="Zadajte cenu" />
+                    <ValidationMessage For="() => bookModel.Price" />
+                </div>
+
+                <div class="form-group">
+                    <label for="image">Obrázok (URL)</label>
+                    <InputText id="image" class="form-control" @bind-Value="bookModel.Image" placeholder="Zadajte URL obrázku" />
+                    <ValidationMessage For="() => bookModel.Image" />
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Popis</label>
+                    <InputTextArea id="description" class="form-control" @bind-Value="bookModel.Description" placeholder="Zadajte popis knihy" />
+                    <ValidationMessage For="() => bookModel.Description" />
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Pridať knihu</button>
+                </div>
+            </EditForm>
+
+            @if (!string.IsNullOrEmpty(successMessage))
+            {
+                <div class="alert alert-success mt-3">@successMessage</div>
+            }
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <h3>Prístup zamietnutý</h3>
+        <p>Na prístup k tejto stránke musíte byť prihlásený ako admin.</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+@code {
+    private BookModel bookModel = new();
+    private string? successMessage;
+
+    private async Task BookAdd()
+    {
+        DbContext.Books.Add(bookModel);
+        await DbContext.SaveChangesAsync();
+        successMessage = "Kniha bola úspešne pridaná!";
+        bookModel = new BookModel(); 
+    }
+}
