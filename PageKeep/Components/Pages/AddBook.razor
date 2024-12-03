@@ -1,52 +1,51 @@
 ﻿@page "/add-book"
+
 @using PageKeep.Models
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.DataProtection.Repositories
 @using PageKeep.dbcontext
 @inject NavigationManager NavManager
 @inject AppDbContext DbContext
+@rendermode InteractiveServer
 
 <AuthorizeView Roles="Admin" Context="authContext">
     <Authorized Context="authorizedContext">
         <div class="add-book-container">
             <h2>Pridať knihu</h2>
-            <EditForm Model="@bookModel" OnValidSubmit="BookAdd" FormName="BookAddForm" Context="editFormContext">
+            <EditForm Model="@BookModel" OnValidSubmit="BookAdd" FormName="AddBookForm">
+                <DataAnnotationsValidator />
                 <ValidationSummary />
 
                 <div class="form-group">
                     <label for="title">Názov</label>
-                    <InputText id="title" class="form-control" @bind-Value="bookModel.Title" placeholder="Zadajte názov knihy" />
-                    <ValidationMessage For="() => bookModel.Title" />
+                    <InputText id="title" class="form-control" @bind-Value="BookModel.Title" placeholder="Zadajte názov knihy" />
+                    <ValidationMessage For="() => BookModel.Title" />
                 </div>
 
                 <div class="form-group">
                     <label for="author">Autor</label>
-                    <InputText id="author" class="form-control" @bind-Value="bookModel.Author" placeholder="Zadajte meno autora" />
-                    <ValidationMessage For="() => bookModel.Author" />
+                    <InputText id="author" class="form-control" @bind-Value="BookModel.Author" placeholder="Zadajte meno autora" />
+                    <ValidationMessage For="() => BookModel.Author" />
                 </div>
 
                 <div class="form-group">
                     <label for="price">Cena</label>
-                    <InputNumber id="price" class="form-control" @bind-Value="bookModel.Price" placeholder="Zadajte cenu" />
-                    <ValidationMessage For="() => bookModel.Price" />
+                    <InputNumber id="price" class="form-control" @bind-Value="BookModel.Price" placeholder="Zadajte cenu" />
+                    <ValidationMessage For="() => BookModel.Price" />
                 </div>
 
                 <div class="form-group">
-                    <label for="image">Obrázok (URL)</label>
-                    <InputText id="image" class="form-control" @bind-Value="bookModel.Image" placeholder="Zadajte URL obrázku" />
-                    <ValidationMessage For="() => bookModel.Image" />
-                </div>
-
-                <div class="form-group">
-                    <label for="description">Popis</label>
-                    <InputTextArea id="description" class="form-control" @bind-Value="bookModel.Description" placeholder="Zadajte popis knihy" />
-                    <ValidationMessage For="() => bookModel.Description" />
+                    <label for="image">URL obrázka</label>
+                    <InputText id="image" class="form-control" @bind-Value="BookModel.Image" placeholder="Zadajte URL obrázka" />
+                    <ValidationMessage For="() => BookModel.Image" />
                 </div>
 
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">Pridať knihu</button>
                 </div>
             </EditForm>
+
 
             @if (!string.IsNullOrEmpty(successMessage))
             {
@@ -61,15 +60,18 @@
 </AuthorizeView>
 
 
+
 @code {
-    private BookModel bookModel = new();
+    [SupplyParameterFromForm]
+    public BookModel BookModel { get; set; } = new();
+
     private string? successMessage;
 
     private async Task BookAdd()
     {
-        DbContext.Books.Add(bookModel);
+        DbContext.Books.Add(BookModel);
         await DbContext.SaveChangesAsync();
         successMessage = "Kniha bola úspešne pridaná!";
-        bookModel = new BookModel(); 
     }
 }
+
