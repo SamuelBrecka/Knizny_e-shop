@@ -1,0 +1,44 @@
+﻿@page "/"
+
+@using Microsoft.EntityFrameworkCore
+@inject PageKeep.dbcontext.AppDbContext DbContext
+
+<section id="home" class="home">
+    <div class="container">
+        <h2>Vitajte v našom knižnom eshope!</h2>
+        <p>Objavte svoju ďalšiu obľúbenú knihu.</p>
+    </div>
+</section>
+
+<section class="books" id="books">
+    <div class="container">
+        <h2>Naše Knihy</h2>
+        <div class="book-grid">
+            @if (books == null || !books.Any())
+            {
+                <p>Momentálne nemáme žiadne knihy v ponuke.</p>
+            }
+            else
+            {
+                @foreach (var book in books)
+                {
+                    <a href="/book/@book.Id" class="book">
+                        <img src="@book.Image" alt="@book.Title" style="max-width: 300px; height: 440px;" />
+                        <h3>@book.Title</h3>
+                        <p>Autor: @book.Author</p>
+                        <p>Cena: @book.Price €</p>
+                    </a>
+                }
+            }
+        </div>
+    </div>
+</section>
+
+@code {
+    private List<PageKeep.Models.BookModel>? books;
+
+    protected override async Task OnInitializedAsync()
+    {
+        books = await DbContext.Books.ToListAsync();
+    }
+}

@@ -1,0 +1,25 @@
+﻿@inherits LayoutComponentBase
+
+    @if (!IsLoginPage)
+    {
+        <header>
+            <NavMenu/>
+        </header>
+    }
+
+    <main>
+        @Body
+    </main>
+
+@code {
+    private bool IsLoginPage;
+
+    protected override void OnParametersSet()
+    {
+        var currentUri = navManager.Uri;
+        IsLoginPage = currentUri.Contains("/login", StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Inject]
+    private NavigationManager navManager { get; set; }
+}

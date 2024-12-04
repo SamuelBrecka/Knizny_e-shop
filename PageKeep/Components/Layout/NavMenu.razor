@@ -1,0 +1,43 @@
+﻿<div class="header-container">
+    <div class="title-bar">
+        <h1>Knižný Eshop</h1>
+        <div class="auth-links">
+            <AuthorizeView>
+                <Authorized>
+                    <a href="/logout">Logout</a>
+                    <div class="user-message">@message</div>
+                </Authorized>
+                <NotAuthorized>
+                    <a href="/login">Login</a>
+                </NotAuthorized>
+            </AuthorizeView>
+        </div>
+    </div>
+    <nav class="nav-container">
+        <ul class="nav-menu">
+            <li><a href="/">Domov</a></li>
+            <li><a href="#books">Knihy</a></li>
+            <AuthorizeView Roles = "Admin">
+                <Authorized>
+                    <li><a href="/add-book">Pridaj knihu</a></li>
+                </Authorized>
+            </AuthorizeView>
+        </ul>
+    </nav>
+</div>
+
+@code {
+    private string? message;
+
+    [CascadingParameter]
+    private Task<AuthenticationState> authStateTask { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await authStateTask;
+        if (authState.User.Identity?.IsAuthenticated == true)
+        {
+            message = $"Ahoj {authState.User.Identity.Name}\nVitajte späť!";
+        }
+    }
+}
