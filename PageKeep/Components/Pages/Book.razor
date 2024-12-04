@@ -1,6 +1,9 @@
 ﻿@page "/book/{BookId:int}"
+
 @using PageKeep.Models
 @inject PageKeep.dbcontext.AppDbContext DbContext
+@inject NavigationManager NavManager
+@rendermode InteractiveServer
 
 @if (CurrentBook != null)
 {
@@ -13,6 +16,15 @@
             <p>Autor: @CurrentBook.Author</p>
             <p>@CurrentBook.Description</p>
             <button class="buy-button">Kúpiť za @CurrentBook.Price €</button>
+            
+            <AuthorizeView Roles="Admin">
+                <Authorized>
+                    <div class="admin-actions">
+                        <button class="btn-delete" @onclick="NavigateToEditBook">Upraviť</button>
+                        <button class="btn-delete" @onclick="DeleteBook">Vymazať</button>
+                    </div>
+                </Authorized>
+            </AuthorizeView>
         </div>
     </div>
 }
@@ -24,23 +36,29 @@ else
     </div>
 }
 
-<section id="contact" class="contact">
-    <div class="container">
-        <h2>Kontakt</h2>
-        <p>Email: info@kniznyeshop.sk</p>
-        <p>Telefón: +421 123 456 789</p>
-    </div>
-</section>
-
-
 @code {
     [Parameter]
     public int BookId { get; set; }
 
     private BookModel? CurrentBook;
 
-    protected override async Task OnParametersSetAsync()
+    protected override async Task OnInitializedAsync()
     {
         CurrentBook = await DbContext.Books.FindAsync(BookId);
+    }
+
+    private void NavigateToEditBook()
+    {
+        NavManager.NavigateTo($"/edit-book/{BookId}");
+    }
+
+    private async Task DeleteBook()
+    {
+        if (CurrentBook != null)
+        {
+            DbContext.Books.Remove(CurrentBook);
+            await DbContext.SaveChangesAsync();
+            NavManager.NavigateTo("/"); // Presmerovanie po vymazaní
+        }
     }
 }

@@ -15,9 +15,13 @@
     </div>
     <nav class="nav-container">
         <ul class="nav-menu">
-            <li><a href="#home">Domov</a></li>
+            <li><a href="/">Domov</a></li>
             <li><a href="#books">Knihy</a></li>
-            <li><a href="info.html">O nás</a></li>
+            <AuthorizeView Roles = "Admin">
+                <Authorized>
+                    <li><a href="/add-book">Pridaj knihu</a></li>
+                </Authorized>
+            </AuthorizeView>
         </ul>
     </nav>
 </div>

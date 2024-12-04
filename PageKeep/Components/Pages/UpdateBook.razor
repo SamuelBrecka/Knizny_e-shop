@@ -1,0 +1,116 @@
+﻿@page "/edit-book/{BookId:int}"
+
+@using PageKeep.Models
+@using PageKeep.dbcontext
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Authorization
+@inject AppDbContext DbContext
+@inject NavigationManager NavManager
+@inject AuthenticationStateProvider AuthStateProvider
+@rendermode InteractiveServer
+
+<AuthorizeView Roles="Admin" Context = "authContext">
+    <Authorized>
+        <section id="edit-book" class="edit-book-section">
+            <div class="container">
+                <h2>Upraviť knihu</h2>
+                @if (Book == null)
+                {
+                    <p>Načítava sa kniha...</p>
+                }
+                else
+                {
+                    <div class="edit-book-form">
+                        <EditForm Model="@Book" OnValidSubmit="EditBook" FormName="FormUpdateBook">
+                            <DataAnnotationsValidator />
+                            <ValidationSummary />
+
+                            <div class="form-group">
+                                <label for="title">Názov</label>
+                                <InputText id="title" class="form-control" @bind-Value="Book.Title" placeholder="Zadajte názov knihy" />
+                                <ValidationMessage For="() => Book.Title" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="author">Autor</label>
+                                <InputText id="author" class="form-control" @bind-Value="Book.Author" placeholder="Zadajte meno autora" />
+                                <ValidationMessage For="() => Book.Author" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="price">Cena</label>
+                                <InputNumber id="price" class="form-control" @bind-Value="Book.Price" placeholder="Zadajte cenu" />
+                                <ValidationMessage For="() => Book.Price" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="image">URL obrázka</label>
+                                <InputText id="image" class="form-control" @bind-Value="Book.Image" placeholder="Zadajte URL obrázka" />
+                                <ValidationMessage For="() => Book.Image" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="description">Popis</label>
+                                <InputTextArea id="description" class="form-control" @bind-Value="Book.Description" placeholder="Zadajte popis knihy" />
+                                <ValidationMessage For="() => Book.Description" />
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">Uložiť zmeny</button>
+                                <button type="button" class="btn btn-secondary" @onclick="NavigateBack">Zrušiť</button>
+                            </div>
+                        </EditForm>
+                    </div>
+                }
+            </div>
+        </section>
+    </Authorized>
+    <NotAuthorized>
+        <div class="container">
+            <h2>Prístup zamietnutý</h2>
+            <p>Na prístup k tejto stránke musíte byť prihlásený ako administrátor.</p>
+        </div>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    [Parameter]
+    public int BookId { get; set; }
+
+    private BookModel? Book;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (!user.IsInRole("Admin"))
+        {
+            NavManager.NavigateTo("/access-denied");
+            return;
+        }
+
+        Book = await DbContext.Books.FindAsync(BookId);
+
+        if (Book == null)
+        {
+            NavManager.NavigateTo("/");
+        }
+    }
+
+    private async Task EditBook()
+    {
+        if (Book != null)
+        {
+            DbContext.Books.Update(Book);
+            await DbContext.SaveChangesAsync();
+
+            NavManager.NavigateTo("/");
+        }
+    }
+
+    private void NavigateBack()
+    { 
+        NavManager.NavigateTo("/");
+    }
+}

@@ -21,10 +21,10 @@ header {
     padding: 20px 0;
 }
 
-header h1 {
-    text-align: center;
-    margin-bottom: 10px;
-}
+    header h1 {
+        text-align: center;
+        margin-bottom: 10px;
+    }
 
 nav ul {
     list-style: none;
@@ -34,17 +34,17 @@ nav ul {
     padding: 0;
 }
 
-nav ul li a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 18px;
-    padding: 5px;
-}
+    nav ul li a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 18px;
+        padding: 5px;
+    }
 
-nav ul li a:hover {
-        background-color: dimgray;
-        border-radius: 5px;
-}
+        nav ul li a:hover {
+            background-color: dimgray;
+            border-radius: 5px;
+        }
 
 .header-container {
     text-align: center;
@@ -71,18 +71,18 @@ nav ul li a:hover {
     right: 20px;
     top: 10px;
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     align-items: flex-end;
     gap: 10px;
 }
 
     .auth-links a {
-        color: #fff; 
+        color: #fff;
         text-decoration: none;
         font-size: 14px;
         padding: 5px 10px;
         border-radius: 5px;
-        background-color: #444; 
+        background-color: #444;
     }
 
         .auth-links a:hover {
@@ -92,10 +92,10 @@ nav ul li a:hover {
 .user-message {
     font-size: 14px;
     font-weight: bold;
-    color: #fff; 
+    color: #fff;
     text-align: right;
-    margin-top: 5px; 
-    white-space: pre-wrap; 
+    margin-top: 5px;
+    white-space: pre-wrap;
 }
 
 .nav-container {
@@ -106,14 +106,14 @@ nav ul li a:hover {
     list-style: none;
     padding: 0;
     display: flex;
-    justify-content: center; 
+    justify-content: center;
     gap: 20px;
 }
 
     .nav-menu li a {
         text-decoration: none;
         font-size: 16px;
-        color: #fff; 
+        color: #fff;
         padding: 10px 15px;
         border-radius: 5px;
         background-color: transparent;
@@ -127,22 +127,22 @@ nav ul li a:hover {
 
 /*Home body*/
 .home {
-color: black;
-height: 400px;
-display: flex;
-align-items: center;
-justify-content: center;
-text-align: center;
+    color: black;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
-.home h2 {
-    font-size: 48px;
-    margin-bottom: 10px;
-}
+    .home h2 {
+        font-size: 48px;
+        margin-bottom: 10px;
+    }
 
-.home p {
-    font-size: 24px;
-}
+    .home p {
+        font-size: 24px;
+    }
 
 .books {
     padding: 40px 0;
@@ -151,8 +151,9 @@ text-align: center;
 
 .book-grid {
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;
     gap: 20px;
+    justify-content: center;
 }
 
 .book {
@@ -161,14 +162,15 @@ text-align: center;
     border-radius: 10px;
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex: 1 1 calc(25% - 20px);
+    max-width: 300px;
 }
 
-
-.book img {
-    max-width: 80%;
-    height: auto;
-    border-radius: 10px;
-}
+    .book img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+    }
 
 .about, .contact {
     padding: 40px 0;
@@ -202,9 +204,9 @@ a {
     color: inherit;
 }
 
-a:hover {
-    text-decoration: none;
-}
+    a:hover {
+        text-decoration: none;
+    }
 
 
 
@@ -240,9 +242,9 @@ a:hover {
     margin-top: 20px;
 }
 
-.buy-button:hover {
-    background-color: #0056b3;
-}
+    .buy-button:hover {
+        background-color: #0056b3;
+    }
 
 @media (min-width: 760px) {
     .container-book {
@@ -253,15 +255,37 @@ a:hover {
         justify-content: flex-end;
     }
 
-    .image-container img {
-        margin-right: 20px;
-        margin-left: 0;
-    }
+        .image-container img {
+            margin-right: 20px;
+            margin-left: 0;
+        }
 
     .text-container {
         flex: 2;
     }
 }
+
+.admin-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.btn-delete {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: red;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+    .btn-delete:hover {
+        background-color: darkred;
+    }
+
 
 
 
@@ -279,35 +303,35 @@ a:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.intro .text {
-    flex: 1;
-    margin-right: 20px;
-}
+    .intro .text {
+        flex: 1;
+        margin-right: 20px;
+    }
 
-.intro .image img {
-    height: auto;
-    border-radius: 10px;
-    max-width: 500px;
-}
+    .intro .image img {
+        height: auto;
+        border-radius: 10px;
+        max-width: 500px;
+    }
 
 .benefits {
     text-align: center;
     margin: 40px 20px;
 }
 
-.benefits ul {
-    list-style-type: none;
-    padding: 0;
-}
+    .benefits ul {
+        list-style-type: none;
+        padding: 0;
+    }
 
-.benefits li {
-    margin: 10px 0;
-    font-size: 18px;
-    background-color: #007BFF;
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
-}
+    .benefits li {
+        margin: 10px 0;
+        font-size: 18px;
+        background-color: #007BFF;
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+    }
 
 @media (max-width: 760px) {
     .intro {
@@ -315,14 +339,14 @@ a:hover {
         text-align: center;
     }
 
-    .intro .text {
-        margin-right: 0;
-        margin-bottom: 20px;
-    }
+        .intro .text {
+            margin-right: 0;
+            margin-bottom: 20px;
+        }
 
-    .intro .image img {
-        max-width: 100%;
-    }
+        .intro .image img {
+            max-width: 100%;
+        }
 
     .benefits ul {
         padding: 0 10px;
@@ -333,21 +357,19 @@ a:hover {
     }
 }
 
-
-/* Špecifické štýly pre login stránku */
+/*Login*/
 .login-page {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh; /* Zarovnanie na stred stránky */
-    background-color: #f4f4f9; /* Jemná svetlá farba */
+    min-height: 100vh;
+    background-color: #f4f4f9;
     margin: 0;
 }
 
-/* Kontajner pre login box */
 .login-box {
     width: 100%;
-    max-width: 400px; /* Maximálna šírka pre login okno */
+    max-width: 400px;
     padding: 20px 30px;
     background-color: #ffffff;
     border: 1px solid #ddd;
@@ -356,14 +378,12 @@ a:hover {
     text-align: center;
 }
 
-    /* Nadpis */
     .login-box h2 {
         font-size: 24px;
         color: #333;
         margin-bottom: 20px;
     }
 
-    /* Formulárové skupiny */
     .login-box .form-group {
         margin-bottom: 15px;
         text-align: left;
@@ -391,7 +411,6 @@ a:hover {
             box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
         }
 
-    /* Login button */
     .login-box .btn-primary {
         display: block;
         width: 100%;
@@ -411,7 +430,6 @@ a:hover {
             background-color: #0056b3;
         }
 
-/* Responzívny dizajn */
 @media (max-width: 768px) {
     .login-box {
         padding: 15px 20px;
@@ -481,3 +499,86 @@ a:hover {
     font-size: 14px;
     border-radius: 5px;
 }
+
+
+/*Update*/
+.edit-book-section {
+    padding: 40px 0;
+    background-color: #f4f4f4;
+}
+
+    .edit-book-section .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: white;
+        padding: 20px 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .edit-book-section h2 {
+        text-align: center;
+        font-size: 28px;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+.edit-book-form .form-group {
+    margin-bottom: 20px;
+}
+
+.edit-book-form label {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    color: #555;
+}
+
+.edit-book-form input,
+.edit-book-form textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.edit-book-form textarea {
+    resize: vertical;
+    height: 100px;
+}
+
+.edit-book-form .form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.edit-book-form .btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.edit-book-form .btn-primary {
+    background-color: #007BFF;
+    color: white;
+}
+
+    .edit-book-form .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+.edit-book-form .btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+    .edit-book-form .btn-secondary:hover {
+        background-color: #5a6268;
+    }

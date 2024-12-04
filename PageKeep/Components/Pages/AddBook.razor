@@ -1,77 +1,104 @@
 ﻿@page "/add-book"
 
 @using PageKeep.Models
-@using Microsoft.AspNetCore.Authorization
-@using Microsoft.AspNetCore.Components.Authorization
-@using Microsoft.AspNetCore.DataProtection.Repositories
 @using PageKeep.dbcontext
-@inject NavigationManager NavManager
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Authorization
 @inject AppDbContext DbContext
+@inject NavigationManager NavManager
+@inject AuthenticationStateProvider AuthStateProvider
 @rendermode InteractiveServer
 
 <AuthorizeView Roles="Admin" Context="authContext">
-    <Authorized Context="authorizedContext">
-        <div class="add-book-container">
-            <h2>Pridať knihu</h2>
-            <EditForm Model="@BookModel" OnValidSubmit="BookAdd" FormName="AddBookForm">
-                <DataAnnotationsValidator />
-                <ValidationSummary />
+    <Authorized>
+        <section id="add-book" class="edit-book-section">
+            <div class="container">
+                <h2>Pridať knihu</h2>
+                <div class="edit-book-form">
+                    <EditForm Model="@BookModel" OnValidSubmit="BookAdd" FormName="FormAddBook">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
 
-                <div class="form-group">
-                    <label for="title">Názov</label>
-                    <InputText id="title" class="form-control" @bind-Value="BookModel.Title" placeholder="Zadajte názov knihy" />
-                    <ValidationMessage For="() => BookModel.Title" />
+                        <div class="form-group">
+                            <label for="title">Názov</label>
+                            <InputText id="title" class="form-control" @bind-Value="BookModel.Title" placeholder="Zadajte názov knihy" />
+                            <ValidationMessage For="() => BookModel.Title" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="author">Autor</label>
+                            <InputText id="author" class="form-control" @bind-Value="BookModel.Author" placeholder="Zadajte meno autora" />
+                            <ValidationMessage For="() => BookModel.Author" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="price">Cena</label>
+                            <InputNumber id="price" class="form-control" @bind-Value="BookModel.Price" placeholder="Zadajte cenu" />
+                            <ValidationMessage For="() => BookModel.Price" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="image">URL obrázka</label>
+                            <InputText id="image" class="form-control" @bind-Value="BookModel.Image" placeholder="Zadajte URL obrázka" />
+                            <ValidationMessage For="() => BookModel.Image" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">Popis</label>
+                            <InputTextArea id="description" class="form-control" @bind-Value="BookModel.Description" placeholder="Zadajte popis knihy" />
+                            <ValidationMessage For="() => BookModel.Description" />
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Pridať knihu</button>
+                            <button type="button" class="btn btn-secondary" @onclick="NavigateBack">Zrušiť</button>
+                        </div>
+                    </EditForm>
+
+                    @if (!string.IsNullOrEmpty(SuccessMessage))
+                    {
+                        <div class="alert alert-success mt-3">@SuccessMessage</div>
+                    }
                 </div>
-
-                <div class="form-group">
-                    <label for="author">Autor</label>
-                    <InputText id="author" class="form-control" @bind-Value="BookModel.Author" placeholder="Zadajte meno autora" />
-                    <ValidationMessage For="() => BookModel.Author" />
-                </div>
-
-                <div class="form-group">
-                    <label for="price">Cena</label>
-                    <InputNumber id="price" class="form-control" @bind-Value="BookModel.Price" placeholder="Zadajte cenu" />
-                    <ValidationMessage For="() => BookModel.Price" />
-                </div>
-
-                <div class="form-group">
-                    <label for="image">URL obrázka</label>
-                    <InputText id="image" class="form-control" @bind-Value="BookModel.Image" placeholder="Zadajte URL obrázka" />
-                    <ValidationMessage For="() => BookModel.Image" />
-                </div>
-
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Pridať knihu</button>
-                </div>
-            </EditForm>
-
-
-            @if (!string.IsNullOrEmpty(successMessage))
-            {
-                <div class="alert alert-success mt-3">@successMessage</div>
-            }
-        </div>
+            </div>
+        </section>
     </Authorized>
     <NotAuthorized>
-        <h3>Prístup zamietnutý</h3>
-        <p>Na prístup k tejto stránke musíte byť prihlásený ako admin.</p>
+        <div class="container">
+            <h2>Prístup zamietnutý</h2>
+            <p>Na prístup k tejto stránke musíte byť prihlásený ako administrátor.</p>
+        </div>
     </NotAuthorized>
 </AuthorizeView>
 
-
-
 @code {
-    [SupplyParameterFromForm]
-    public BookModel BookModel { get; set; } = new();
+    private BookModel BookModel { get; set; } = new();
+    private string? SuccessMessage;
 
-    private string? successMessage;
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        // Kontrola, či používateľ má rolu Admin
+        if (!user.IsInRole("Admin"))
+        {
+            NavManager.NavigateTo("/access-denied");
+            return;
+        }
+    }
 
     private async Task BookAdd()
     {
         DbContext.Books.Add(BookModel);
         await DbContext.SaveChangesAsync();
-        successMessage = "Kniha bola úspešne pridaná!";
+        SuccessMessage = "Kniha bola úspešne pridaná!";
+        BookModel = new BookModel(); // Reset formulára po úspešnom pridaní knihy
+    }
+
+    private void NavigateBack()
+    {
+        // Presmerovanie späť
+        NavManager.NavigateTo("/");
     }
 }
-
