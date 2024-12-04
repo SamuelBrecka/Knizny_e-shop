@@ -80,7 +80,6 @@
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
 
-        // Kontrola, či používateľ má rolu Admin
         if (!user.IsInRole("Admin"))
         {
             NavManager.NavigateTo("/access-denied");
@@ -93,12 +92,11 @@
         DbContext.Books.Add(BookModel);
         await DbContext.SaveChangesAsync();
         SuccessMessage = "Kniha bola úspešne pridaná!";
-        BookModel = new BookModel(); // Reset formulára po úspešnom pridaní knihy
+        BookModel = new BookModel();
     }
 
     private void NavigateBack()
     {
-        // Presmerovanie späť
         NavManager.NavigateTo("/");
     }
 }

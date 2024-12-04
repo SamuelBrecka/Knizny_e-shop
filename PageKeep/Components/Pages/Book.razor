@@ -58,7 +58,7 @@ else
         {
             DbContext.Books.Remove(CurrentBook);
             await DbContext.SaveChangesAsync();
-            NavManager.NavigateTo("/"); // Presmerovanie po vymazaní
+            NavManager.NavigateTo("/");
         }
     }
 }
