@@ -1,6 +1,7 @@
 ﻿@page "/book/{BookId:int}"
 
 @using PageKeep.Models
+@using Microsoft.EntityFrameworkCore
 @inject PageKeep.dbcontext.AppDbContext DbContext
 @inject NavigationManager NavManager
 @rendermode InteractiveServer
@@ -36,15 +37,64 @@ else
     </div>
 }
 
+<AuthorizeView Roles="User">
+    <Authorized>
+        <div class="add-review">
+            <h3>Pridať recenziu</h3>
+            <EditForm Model="@NewReview" OnValidSubmit="SubmitReview" FormName="formAddReview" Context="contextAddReview">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div class="form-group">
+                    <label for="reviewerName">Meno</label>
+                    <InputText id="reviewerName" @bind-Value="NewReview.ReviewerName" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label for="content">Recenzia</label>
+                    <InputTextArea id="content" @bind-Value="NewReview.Content" class="form-control" />
+                </div>
+
+                <button type="submit" class="btn btn-primary">Pridať recenziu</button>
+            </EditForm>
+        </div>
+    </Authorized>
+</AuthorizeView>
+
+<div class="reviews">
+    <h3>Recenzie</h3>
+    @if (Reviews == null || !Reviews.Any())
+    {
+        <p>Zatiaľ nie sú k dispozícii žiadne recenzie.</p>
+    }
+    else
+    {
+        @foreach (var review in Reviews)
+        {
+            <div class="review">
+                <h4>@review.ReviewerName</h4>
+                <p>@review.Content</p>
+                <small>@review.CreatedAt.ToString("d. MMM yyyy")</small>
+            </div>
+        }
+    }
+</div>
+
+
+
 @code {
     [Parameter]
     public int BookId { get; set; }
 
     private BookModel? CurrentBook;
 
+    private List<Review> Reviews;
+    private Review NewReview = new();
+
     protected override async Task OnInitializedAsync()
     {
         CurrentBook = await DbContext.Books.FindAsync(BookId);
+        Reviews = await DbContext.Reviews.Where(r => r.BookId == BookId).ToListAsync();
     }
 
     private void NavigateToEditBook()
@@ -60,5 +110,18 @@ else
             await DbContext.SaveChangesAsync();
             NavManager.NavigateTo("/");
         }
+    }
+
+    private async Task SubmitReview()
+    {
+        NewReview.BookId = BookId;
+        NewReview.CreatedAt = DateTime.Now;
+
+        DbContext.Reviews.Add(NewReview);
+        await DbContext.SaveChangesAsync();
+
+        Reviews = await DbContext.Reviews.Where(r => r.BookId == BookId).ToListAsync();
+
+        NewReview = new();
     }
 }

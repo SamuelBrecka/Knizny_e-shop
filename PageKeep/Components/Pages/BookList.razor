@@ -7,13 +7,11 @@
 <section id="books" class="books-section">
     <div class="container">
 
-        <!-- Vyhľadávací panel -->
         <div class="search-bar">
             <input type="text" class="form-control search-input" @bind="searchQuery" @bind:event="oninput" placeholder="Vyhľadajte knihu..." />
             <button class="search-button" @onclick="SearchBooks">Hľadať</button>
         </div>
 
-        <!-- Zoznam kníh -->
         <div class="book-grid">
             @if (filteredBooks == null || !filteredBooks.Any())
             {
@@ -36,26 +34,24 @@
 </section>
 
 @code {
-    private List<PageKeep.Models.BookModel>? books; // Všetky knihy
-    private List<PageKeep.Models.BookModel>? filteredBooks; // Filtrované knihy
-    private string searchQuery = string.Empty; // Hľadaný reťazec
+    private List<PageKeep.Models.BookModel>? books; 
+    private List<PageKeep.Models.BookModel>? filteredBooks; 
+    private string searchQuery = string.Empty; 
 
     protected override async Task OnInitializedAsync()
     {
-        books = await DbContext.Books.ToListAsync(); // Načítajte všetky knihy
-        filteredBooks = books; // Predvolené filtrované knihy
+        books = await DbContext.Books.ToListAsync(); 
+        filteredBooks = books; 
     }
 
     private void SearchBooks()
     {
         if (string.IsNullOrEmpty(searchQuery))
         {
-            // Ak je pole prázdne, zobraz všetky knihy
             filteredBooks = books;
         }
         else
         {
-            // Filtrovanie podľa názvu knihy alebo autora
             filteredBooks = books?.Where(book =>
                 (book.Title?.Contains(searchQuery, StringComparison.OrdinalIgnoreCase) ?? false) ||
                 (book.Author?.Contains(searchQuery, StringComparison.OrdinalIgnoreCase) ?? false)

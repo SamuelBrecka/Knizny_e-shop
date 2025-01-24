@@ -211,80 +211,188 @@ a {
 
 
 /*kinhy*/
+/* Hlavný kontajner knihy */
 .container-book {
     display: flex;
-    flex-direction: column;
-    max-width: 1000px;
-    margin: 20px;
-    gap: 20px;
+    flex-wrap: wrap; /* Umožní prispôsobenie rozloženia */
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Obrázok knihy */
 .image-container img {
-    height: auto;
+    border-radius: 10px;
     max-width: 300px;
-    margin-left: 0;
+    height: auto;
+    margin-right: 20px;
 }
 
 .text-container {
     flex: 1;
+    padding: 10px;
+}
+
+.text-container h2 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.text-container p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #555;
 }
 
 .buy-button {
     display: inline-block;
     padding: 10px 20px;
     font-size: 16px;
-    color: white;
-    background-color: #007BFF;
+    color: #fff;
+    background-color: #007bff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    margin-top: 20px;
     text-align: center;
-    margin-top: 20px;
 }
 
-    .buy-button:hover {
-        background-color: #0056b3;
-    }
-
-@media (min-width: 760px) {
-    .container-book {
-        flex-direction: row;
-    }
-
-    .image-container {
-        justify-content: flex-end;
-    }
-
-        .image-container img {
-            margin-right: 20px;
-            margin-left: 0;
-        }
-
-    .text-container {
-        flex: 2;
-    }
+.buy-button:hover {
+    background-color: #0056b3;
 }
 
+/* Admin akcie */
 .admin-actions {
-    margin-top: 20px;
     display: flex;
     gap: 10px;
+    margin-top: 20px;
 }
 
 .btn-delete {
     padding: 10px 20px;
     font-size: 16px;
-    color: white;
+    color: #fff;
     background-color: red;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    text-align: center;
 }
 
-    .btn-delete:hover {
-        background-color: darkred;
+.btn-delete:hover {
+    background-color: darkred;
+}
+
+/* Recenzie */
+.reviews {
+    margin-top: 40px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.reviews h3 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.review {
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+}
+
+.review h4 {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.review p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #444;
+}
+
+.review small {
+    font-size: 14px;
+    color: #888;
+}
+
+.add-review {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.add-review h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.add-review .form-group {
+    margin-bottom: 15px;
+}
+
+.add-review label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.add-review input,
+.add-review textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.add-review textarea {
+    resize: vertical;
+    height: 100px;
+}
+
+.add-review button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.add-review button:hover {
+    background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+    .container-book {
+        flex-direction: column;
+        align-items: center;
     }
+
+    .image-container img {
+        margin-bottom: 20px;
+    }
+
+    .admin-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+
 
 
 
