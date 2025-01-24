@@ -478,7 +478,7 @@ a {
         box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
     }
 
-.btn-primary {
+.add-button {
     display: block;
     width: 100%;
     padding: 10px;
@@ -490,7 +490,7 @@ a {
     cursor: pointer;
 }
 
-    .btn-primary:hover {
+    .add-button:hover {
         background-color: #0056b3;
     }
 
@@ -582,3 +582,70 @@ a {
     .edit-book-form .btn-secondary:hover {
         background-color: #5a6268;
     }
+
+
+/*Zoznam knih*/
+.books-section {
+    padding: 40px 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Priestor medzi inputom a tlaèidlom */
+    margin: 10px 0;
+}
+
+.search-input {
+    flex: 1; /* Nastaví šírku inputu, aby zaberal èo najviac miesta */
+    padding: 5px;
+    font-size: 14px;
+}
+
+.search-button {
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+    .search-button:hover {
+        background-color: #0056b3;
+    }
+
+
+.book {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 200px;
+}
+
+.book img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.book h3 {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.book p {
+    font-size: 14px;
+    color: #555;
+}
