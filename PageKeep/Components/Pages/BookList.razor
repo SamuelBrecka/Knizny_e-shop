@@ -22,7 +22,7 @@
                 @foreach (var book in filteredBooks)
                 {
                     <a href="/book/@book.Id" class="book">
-                        <img src="@book.Image" alt="@book.Title" style="max-width: 300px; height: 440px;" />
+                        <img src="@book.Image" alt="@book.Title"/>
                         <h3>@book.Title</h3>
                         <p>Autor: @book.Author</p>
                         <p>Cena: @book.Price €</p>

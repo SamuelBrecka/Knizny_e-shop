@@ -12,7 +12,7 @@
 
 <section class="books" id="books">
     <div class="container">
-        <h2>Naše Knihy</h2>
+        <h2>Najpredávanejšie knihy</h2>
         <div class="book-grid">
             @if (books == null || !books.Any())
             {
@@ -20,10 +20,10 @@
             }
             else
             {
-                @foreach (var book in books)
+                @foreach (var book in books.Take(3))
                 {
                     <a href="/book/@book.Id" class="book">
-                        <img src="@book.Image" alt="@book.Title" style="max-width: 300px; height: 440px;" />
+                        <img src="@book.Image" alt="@book.Title"/>
                         <h3>@book.Title</h3>
                         <p>Autor: @book.Author</p>
                         <p>Cena: @book.Price €</p>
