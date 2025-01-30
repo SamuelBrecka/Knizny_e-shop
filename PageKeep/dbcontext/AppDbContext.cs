@@ -15,7 +15,7 @@ namespace PageKeep.dbcontext
 
         public DbSet<UserAccount> Users { get; set; }
 
-        public DbSet<Review> Reviews { get; set; }
+        public DbSet<ReviewModel> Reviews { get; set; }
 
     }
 

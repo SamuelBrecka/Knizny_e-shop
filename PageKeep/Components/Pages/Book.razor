@@ -41,18 +41,18 @@ else
     <Authorized>
         <div class="add-review">
             <h3>Pridať recenziu</h3>
-            <EditForm Model="@NewReview" OnValidSubmit="SubmitReview" FormName="formAddReview" Context="contextAddReview">
+            <EditForm Model="@_newReviewModel" OnValidSubmit="SubmitReview" FormName="formAddReviewModel" Context="contextAddReview">
                 <DataAnnotationsValidator />
                 <ValidationSummary />
 
                 <div class="form-group">
                     <label for="reviewerName">Meno</label>
-                    <InputText id="reviewerName" @bind-Value="NewReview.ReviewerName" class="form-control" />
+                    <InputText id="reviewerName" @bind-Value="_newReviewModel.ReviewerName" class="form-control" />
                 </div>
 
                 <div class="form-group">
                     <label for="content">Recenzia</label>
-                    <InputTextArea id="content" @bind-Value="NewReview.Content" class="form-control" />
+                    <InputTextArea id="content" @bind-Value="_newReviewModel.Content" class="form-control" />
                 </div>
 
                 <button type="submit" class="btn btn-primary">Pridať recenziu</button>
@@ -81,6 +81,10 @@ else
 </div>
 
 
+<div class="show-all-reviews">
+    <button class="btn-full-width" @onclick="NavigateToAllReviews">Zobraziť všetky recenzie</button>
+</div>
+
 
 @code {
     [Parameter]
@@ -88,8 +92,8 @@ else
 
     private BookModel? CurrentBook;
 
-    private List<Review> Reviews;
-    private Review NewReview = new();
+    private List<ReviewModel> Reviews;
+    private ReviewModel _newReviewModel = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -114,14 +118,19 @@ else
 
     private async Task SubmitReview()
     {
-        NewReview.BookId = BookId;
-        NewReview.CreatedAt = DateTime.Now;
+        _newReviewModel.BookId = BookId;
+        _newReviewModel.CreatedAt = DateTime.Now;
 
-        DbContext.Reviews.Add(NewReview);
+        DbContext.Reviews.Add(_newReviewModel);
         await DbContext.SaveChangesAsync();
 
         Reviews = await DbContext.Reviews.Where(r => r.BookId == BookId).ToListAsync();
 
-        NewReview = new();
+        _newReviewModel = new();
+    }
+
+    private void NavigateToAllReviews()
+    {
+        NavManager.NavigateTo($"/reviews/{BookId}");
     }
 }

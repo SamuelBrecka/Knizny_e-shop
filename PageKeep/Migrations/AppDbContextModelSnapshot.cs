@@ -73,7 +73,7 @@ namespace PageKeep.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("PageKeep.Models.Review", b =>
+            modelBuilder.Entity("PageKeep.Models.ReviewModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -102,7 +102,7 @@ namespace PageKeep.Migrations
                     b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("PageKeep.Models.Review", b =>
+            modelBuilder.Entity("PageKeep.Models.ReviewModel", b =>
                 {
                     b.HasOne("PageKeep.Models.BookModel", "Book")
                         .WithMany()

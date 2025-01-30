@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PageKeep.Models
 {
-    public class Review
+    public class ReviewModel
     {
         [Key]
         public int Id { get; set; }
