@@ -1,29 +1,44 @@
-﻿@page "/reviews"
+﻿@page "/reviews/{BookId:int}"
 
-<h3>Recenzie</h3>
+@using PageKeep.Models
+@using Microsoft.EntityFrameworkCore
+@inject PageKeep.dbcontext.AppDbContext DbContext
+
+<h3>Recenzie pre knihu</h3>
 
 <div class="review-list">
-    @foreach (var review in Reviews)
+    @if (reviewList == null || !reviewList.Any())
     {
-        <div class="review-item">
-            <h4>@review.Author</h4>
-            <p>@review.Comment</p>
-            <small>@review.Date.ToShortDateString()</small>
-        </div>
+        <p>Zatiaľ nie sú k dispozícii žiadne recenzie.</p>
+    }
+    else
+    {
+        @foreach (var review in reviewList)
+        {
+            <div class="review-card">
+                <div class="review-header">
+                    <h4>@review.ReviewerName</h4>
+                    <small>@review.CreatedAt.ToString("d. MMM yyyy")</small>
+                </div>
+                <div class="review-content">
+                    <p>@review.Content</p>
+                </div>
+            </div>
+        }
     }
 </div>
 
 @code {
-    private List<Review> Reviews = new List<Review>
-    {
-        new Review { Author = "GazorPink", Comment = "Féra oliva Jinha", Date = new DateTime(2015, 1, 24) },
-        new Review { Author = "gene", Comment = "da na celkem", Date = new DateTime(2015, 1, 24) }
-    };
+    [Parameter]
+    public int BookId { get; set; }
 
-    public class Review
+    private List<ReviewModel> reviewList;
+
+    protected override async Task OnInitializedAsync()
     {
-        public string Author { get; set; }
-        public string Comment { get; set; }
-        public DateTime Date { get; set; }
+        reviewList = await DbContext.Reviews
+            .Where(r => r.BookId == BookId)
+            .OrderByDescending(r => r.CreatedAt)
+            .ToListAsync();
     }
 }
