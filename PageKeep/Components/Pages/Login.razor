@@ -57,7 +57,7 @@
     private async Task Authenticate()
     {
         var acc = DbContext.Users.Where(i => i.Username == Model.UserName).FirstOrDefault();
-        if (acc is null || acc.PasswordHash != Model.Password)
+        if (acc is null || !PasswordHasher.VerifyPassword(acc.PasswordHash, Model.Password))
         {
             errorMessage = "Neplatne meno alebo heslo";
             return;

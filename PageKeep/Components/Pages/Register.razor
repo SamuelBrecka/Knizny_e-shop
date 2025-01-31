@@ -74,11 +74,13 @@
             return;
         }
 
+        var hashedPassword = PasswordHasher.HashPassword(Model.Password);
+
         var newUser = new UserAccount
             {
                 Username = Model.UserName,
                 Email = Model.Email,
-                PasswordHash = Model.Password,
+                PasswordHash = hashedPassword,
                 Role = "User" 
             };
 
