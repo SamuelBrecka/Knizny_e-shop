@@ -1,5 +1,100 @@
-﻿<h3>Register</h3>
+﻿@page "/register"
+
+@using PageKeep.Models
+@using PageKeep.dbcontext
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Authentication.Cookies
+@using PageKeep.Models.Entities
+@inject AppDbContext DbContext
+@inject NavigationManager navManager
+
+<div class="login-page">
+    <div class="login-box">
+        <h2>Registrácia</h2>
+        <EditForm Model="@Model" OnValidSubmit="RegisterUser" FormName="RegisterForm">
+            <ValidationSummary />
+
+            <div class="form-group">
+                <label for="username">Používateľské meno</label>
+                <InputText id="username" @bind-Value="Model.UserName" class="form-control" placeholder="Zadajte používateľské meno" />
+                <ValidationMessage For="() => Model.UserName" />
+            </div>
+
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <InputText id="email" @bind-Value="Model.Email" class="form-control" placeholder="Zadajte e-mail" />
+                <ValidationMessage For="() => Model.Email" />
+            </div>
+
+            <div class="form-group">
+                <label for="password">Heslo</label>
+                <InputText id="password" @bind-Value="Model.Password" type="password" placeholder="Zadajte heslo" class="form-control" />
+                <ValidationMessage For="() => Model.Password" />
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Potvrdenie hesla</label>
+                <InputText id="confirmPassword" @bind-Value="Model.ConfirmPassword" type="password" placeholder="Zopakujte heslo" class="form-control" />
+                <ValidationMessage For="() => Model.ConfirmPassword" />
+            </div>
+
+            <div class="mb-3 text-center">
+                <span class="text-danger">@errorMessage</span>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Registrovať sa</button>
+            </div>
+        </EditForm>
+    </div>
+</div>
 
 @code {
+    [CascadingParameter]
+    public HttpContext? HttpContext { get; set; }
 
+    [SupplyParameterFromForm]
+    public RegisterViewModel Model { get; set; } = new();
+
+    private string? errorMessage;
+
+    private async Task RegisterUser()
+    {
+        var existingUser = DbContext.Users.FirstOrDefault(u => u.Username == Model.UserName || u.Email == Model.Email);
+        if (existingUser != null)
+        {
+            errorMessage = "Používateľské meno alebo e-mail už existuje.";
+            return;
+        }
+
+        if (Model.Password != Model.ConfirmPassword)
+        {
+            errorMessage = "Heslá sa nezhodujú.";
+            return;
+        }
+
+        var newUser = new UserAccount
+            {
+                Username = Model.UserName,
+                Email = Model.Email,
+                PasswordHash = Model.Password,
+                Role = "User" 
+            };
+
+        DbContext.Users.Add(newUser);
+        await DbContext.SaveChangesAsync();
+
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, Model.UserName),
+            new Claim(ClaimTypes.Role, newUser.Role)
+        };
+
+        var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        var principal = new ClaimsPrincipal(identity);
+        await HttpContext.SignInAsync(principal);
+
+        navManager.NavigateTo("/");
+    }
 }
