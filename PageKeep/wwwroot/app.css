@@ -211,7 +211,6 @@ a {
 
 
 /*kinhy*/
-/* Hlavný kontajner knihy */
 .container-book {
     display: flex;
     flex-wrap: wrap;
@@ -223,7 +222,6 @@ a {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Obrázok knihy */
 .image-container img {
     border-radius: 10px;
     max-width: 300px;
@@ -284,6 +282,42 @@ a {
 
 .btn-delete:hover {
     background-color: darkred;
+}
+
+.page-container {
+    display: flex;
+    width: 100%;
+}
+
+/* Boèné pásy */
+.side-panel {
+    width: 200px;
+    background-repeat: repeat-y;
+    background-position: center;
+    background-size: contain;
+}
+
+    .side-panel.left {
+        background-image: url('/res/pozadie2.jpg');
+    }
+
+    .side-panel.right {
+        background-image: url('/res/pozadie2.jpg');
+    }
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+}
+
+@media (max-width: 1300px) {
+    .side-panel {
+        display: none;
+    }
+
+    .main-content {
+        padding: 10px;
+    }
 }
 
 /* Recenzie */
@@ -717,7 +751,7 @@ a {
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1500px;
     margin: 0 auto;
     padding: 20px;
 }
@@ -782,30 +816,26 @@ a {
 
 
 /*Reviews*/
-/* Základný kontajner pre mriežku */
 .review-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 ståpce */
-    gap: 20px; /* Medzera medzi kartami */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
     padding: 20px;
 }
 
-/* Štýl pre kartu recenzie */
 .review-card {
-    background-color: #f9f9f9; /* Svetlé pozadie */
-    border: 1px solid #ddd; /* Tenký rámik */
-    border-radius: 8px; /* Zaoblené rohy */
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
     padding: 15px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* ¼ahký tieò */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.3s ease;
 }
 
-    /* Hover efekt pre kartu */
     .review-card:hover {
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Silnejší tieò pri hover */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
-/* Štýl pre hlavièku recenzie */
 .review-header {
     display: flex;
     justify-content: space-between;
@@ -816,22 +846,21 @@ a {
     .review-header h4 {
         margin: 0;
         font-size: 1.2em;
-        color: #333; /* Tmavšia farba pre meno */
+        color: #333;
     }
 
     .review-header small {
-        color: #666; /* Svetlejšia farba pre dátum */
+        color: #666;
         font-size: 0.9em;
     }
 
-/* Štýl pre obsah recenzie */
 .review-content {
-    color: #444; /* Farba textu */
+    color: #444;
     line-height: 1.5;
 }
 
 @media (max-width: 768px) {
     .review-grid {
-        grid-template-columns: 1fr; /* 1 ståpec na menších obrazovkách */
+        grid-template-columns: 1fr; 
     }
 }

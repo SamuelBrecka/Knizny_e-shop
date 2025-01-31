@@ -8,25 +8,80 @@
 
 @if (CurrentBook != null)
 {
-    <div class="container-book">
-        <div class="image-container">
-            <img src="@CurrentBook.Image" alt="@CurrentBook.Title" style="max-width: 300px; height: auto;" />
-        </div>
-        <div class="text-container">
-            <h2>@CurrentBook.Title</h2>
-            <p>Autor: @CurrentBook.Author</p>
-            <p>@CurrentBook.Description</p>
-            <button class="buy-button">Kúpiť za @CurrentBook.Price €</button>
-            
-            <AuthorizeView Roles="Admin">
+    <div class="page-container">
+        <div class="side-panel left"></div>
+
+        <div class="main-content">
+            <div class="container-book">
+                <div class="image-container">
+                    <img src="@CurrentBook.Image" alt="@CurrentBook.Title" style="max-width: 300px; height: auto;" />
+                </div>
+                <div class="text-container">
+                    <h2>@CurrentBook.Title</h2>
+                    <p>Autor: @CurrentBook.Author</p>
+                    <p>@CurrentBook.Description</p>
+                    <button class="buy-button">Kúpiť za @CurrentBook.Price €</button>
+
+                    <AuthorizeView Roles="Admin">
+                        <Authorized>
+                            <div class="admin-actions">
+                                <button class="btn-delete" @onclick="NavigateToEditBook">Upraviť</button>
+                                <button class="btn-delete" @onclick="DeleteBook">Vymazať</button>
+                            </div>
+                        </Authorized>
+                    </AuthorizeView>
+                </div>
+            </div>
+
+            <AuthorizeView Roles="User">
                 <Authorized>
-                    <div class="admin-actions">
-                        <button class="btn-delete" @onclick="NavigateToEditBook">Upraviť</button>
-                        <button class="btn-delete" @onclick="DeleteBook">Vymazať</button>
+                    <div class="add-review">
+                        <h3>Pridať recenziu</h3>
+                        <EditForm Model="@_newReviewModel" OnValidSubmit="SubmitReview" FormName="formAddReviewModel" Context="contextAddReview">
+                            <DataAnnotationsValidator />
+                            <ValidationSummary />
+
+                            <div class="form-group">
+                                <label for="reviewerName">Meno</label>
+                                <InputText id="reviewerName" @bind-Value="_newReviewModel.ReviewerName" class="form-control" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="content">Recenzia</label>
+                                <InputTextArea id="content" @bind-Value="_newReviewModel.Content" class="form-control" />
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Pridať recenziu</button>
+                        </EditForm>
                     </div>
                 </Authorized>
             </AuthorizeView>
+
+            <div class="reviews">
+                <h3>Recenzie</h3>
+                @if (Reviews == null || !Reviews.Any())
+                {
+                    <p>Zatiaľ nie sú k dispozícii žiadne recenzie.</p>
+                }
+                else
+                {
+                    @foreach (var review in Reviews)
+                    {
+                        <div class="review">
+                            <h4>@review.ReviewerName</h4>
+                            <p>@review.Content</p>
+                            <small>@review.CreatedAt.ToString("d. MMM yyyy")</small>
+                        </div>
+                    }
+                }
+            </div>
+
+            <div class="show-all-reviews">
+                <button class="btn-full-width" @onclick="NavigateToAllReviews">Zobraziť všetky recenzie</button>
+            </div>
         </div>
+
+        <div class="side-panel right"></div>
     </div>
 }
 else
@@ -36,55 +91,6 @@ else
         <p>Prepáčte, ale kniha s ID @BookId sa nenašla.</p>
     </div>
 }
-
-<AuthorizeView Roles="User">
-    <Authorized>
-        <div class="add-review">
-            <h3>Pridať recenziu</h3>
-            <EditForm Model="@_newReviewModel" OnValidSubmit="SubmitReview" FormName="formAddReviewModel" Context="contextAddReview">
-                <DataAnnotationsValidator />
-                <ValidationSummary />
-
-                <div class="form-group">
-                    <label for="reviewerName">Meno</label>
-                    <InputText id="reviewerName" @bind-Value="_newReviewModel.ReviewerName" class="form-control" />
-                </div>
-
-                <div class="form-group">
-                    <label for="content">Recenzia</label>
-                    <InputTextArea id="content" @bind-Value="_newReviewModel.Content" class="form-control" />
-                </div>
-
-                <button type="submit" class="btn btn-primary">Pridať recenziu</button>
-            </EditForm>
-        </div>
-    </Authorized>
-</AuthorizeView>
-
-<div class="reviews">
-    <h3>Recenzie</h3>
-    @if (Reviews == null || !Reviews.Any())
-    {
-        <p>Zatiaľ nie sú k dispozícii žiadne recenzie.</p>
-    }
-    else
-    {
-        @foreach (var review in Reviews)
-        {
-            <div class="review">
-                <h4>@review.ReviewerName</h4>
-                <p>@review.Content</p>
-                <small>@review.CreatedAt.ToString("d. MMM yyyy")</small>
-            </div>
-        }
-    }
-</div>
-
-
-<div class="show-all-reviews">
-    <button class="btn-full-width" @onclick="NavigateToAllReviews">Zobraziť všetky recenzie</button>
-</div>
-
 
 @code {
     [Parameter]
