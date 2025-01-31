@@ -320,6 +320,37 @@ a {
     }
 }
 
+.genres {
+    margin-top: 20px;
+}
+
+    .genres h3 {
+        font-size: 1.2em;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .genres ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+        .genres ul li {
+            background-color: #f4f4f9;
+            padding: 5px 10px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+
+
+
+
+
+
+
 /* Recenzie */
 .reviews {
     margin-top: 40px;

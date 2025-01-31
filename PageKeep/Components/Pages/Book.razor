@@ -21,6 +21,22 @@
                     <p>Autor: @CurrentBook.Author</p>
                     <p>@CurrentBook.Description</p>
                     <button class="buy-button">Kúpiť za @CurrentBook.Price €</button>
+                    <div class="genres">
+                        <h3>Žánre</h3>
+                        @if (CurrentBook.BookGenres != null && CurrentBook.BookGenres.Any())
+                        {
+                            <ul>
+                                @foreach (var bookGenre in CurrentBook.BookGenres)
+                                {
+                                    <li>@bookGenre.Genre.Name</li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <p>Táto kniha nemá priradené žánre.</p>
+                        }
+                    </div>
 
                     <AuthorizeView Roles="Admin">
                         <Authorized>
@@ -103,7 +119,10 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        CurrentBook = await DbContext.Books.FindAsync(BookId);
+        CurrentBook = await DbContext.Books
+            .Include(b => b.BookGenres) // Načítaj BookGenres
+            .ThenInclude(bg => bg.Genre) // Načítaj Genre pre každý BookGenre
+            .FirstOrDefaultAsync(b => b.Id == BookId);
         Reviews = await DbContext.Reviews.Where(r => r.BookId == BookId).ToListAsync();
     }
 
