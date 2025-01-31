@@ -782,26 +782,30 @@ a {
 
 
 /*Reviews*/
-.review-list {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px; 
+/* Základný kontajner pre mriežku */
+.review-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 ståpce */
+    gap: 20px; /* Medzera medzi kartami */
+    padding: 20px;
 }
 
+/* Štýl pre kartu recenzie */
 .review-card {
-    background-color: #f9f9f9; 
-    border: 1px solid #ddd; 
-    border-radius: 8px; 
+    background-color: #f9f9f9; /* Svetlé pozadie */
+    border: 1px solid #ddd; /* Tenký rámik */
+    border-radius: 8px; /* Zaoblené rohy */
     padding: 15px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* ¼ahký tieò */
     transition: box-shadow 0.3s ease;
 }
 
+    /* Hover efekt pre kartu */
     .review-card:hover {
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Silnejší tieò pri hover */
     }
 
+/* Štýl pre hlavièku recenzie */
 .review-header {
     display: flex;
     justify-content: space-between;
@@ -812,15 +816,22 @@ a {
     .review-header h4 {
         margin: 0;
         font-size: 1.2em;
-        color: #333;
+        color: #333; /* Tmavšia farba pre meno */
     }
 
     .review-header small {
-        color: #666;
+        color: #666; /* Svetlejšia farba pre dátum */
         font-size: 0.9em;
     }
 
+/* Štýl pre obsah recenzie */
 .review-content {
-    color: #444;
+    color: #444; /* Farba textu */
     line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+    .review-grid {
+        grid-template-columns: 1fr; /* 1 ståpec na menších obrazovkách */
+    }
 }
