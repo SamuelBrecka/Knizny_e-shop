@@ -29,7 +29,7 @@ namespace PageKeep.Migrations
 
                     b.HasIndex("GenreId");
 
-                    b.ToTable("BookGenres");
+                    b.ToTable("BookGenres", (string)null);
                 });
 
             modelBuilder.Entity("GenreModel", b =>
@@ -48,7 +48,7 @@ namespace PageKeep.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Genres");
+                    b.ToTable("Genres", (string)null);
                 });
 
             modelBuilder.Entity("PageKeep.Models.BookModel", b =>
@@ -74,7 +74,7 @@ namespace PageKeep.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Books");
+                    b.ToTable("Books", (string)null);
                 });
 
             modelBuilder.Entity("PageKeep.Models.Entities.UserAccount", b =>
@@ -104,7 +104,7 @@ namespace PageKeep.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("PageKeep.Models.ReviewModel", b =>
@@ -133,7 +133,7 @@ namespace PageKeep.Migrations
 
                     b.HasIndex("BookId");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("BookGenreModel", b =>

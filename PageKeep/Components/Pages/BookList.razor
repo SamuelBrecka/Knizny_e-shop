@@ -1,29 +1,44 @@
 ﻿@page "/books"
-@using Microsoft.EntityFrameworkCore
-@using PageKeep.Models.Entities
+
 @inject PageKeep.dbcontext.AppDbContext DbContext
 @rendermode InteractiveServer
 
 
-<section id="books" class="books-section">
+<section class="book-list-section">
     <div class="container">
+        <h2>Zoznam kníh</h2>
 
-        <div class="search-bar">
-            <input type="text" class="form-control search-input" @bind="searchQuery" @bind:event="oninput" placeholder="Vyhľadajte knihu..." />
-            <button class="search-button" @onclick="SearchBooks">Hľadať</button>
+        <div class="search-filter-container">
+            <input type="text" class="form-control search-box" @bind="searchQuery" @bind:event="oninput" placeholder="Vyhľadajte knihu..." />
+
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" @onclick="ToggleDropdown">
+                    Filtrovať podľa žánru
+                </button>
+                <div class="dropdown-menu" style="display: @(isDropdownOpen ? "block" : "none")">
+                    @foreach (var genre in genres)
+                    {
+                        <div class="dropdown-item">
+                            <input type="checkbox" checked="@selectedGenres.Contains(genre.Id)" @onclick="() => ToggleGenre(genre.Id)" />
+                            <label>@genre.Name</label>
+                        </div>
+                    }
+                </div>
+            </div>
         </div>
 
+        <!-- Zoznam kníh -->
         <div class="book-grid">
             @if (filteredBooks == null || !filteredBooks.Any())
             {
-                <p>Žiadne knihy nespĺňajú vaše kritériá.</p>
+                <p>Žiadne knihy nevyhovujú zadaným kritériám.</p>
             }
             else
             {
                 @foreach (var book in filteredBooks)
                 {
                     <a href="/book/@book.Id" class="book">
-                        <img src="@book.Image" alt="@book.Title"/>
+                        <img src="@book.Image" alt="@book.Title" />
                         <h3>@book.Title</h3>
                         <p>Autor: @book.Author</p>
                         <p>Cena: @book.Price €</p>
@@ -35,29 +50,48 @@
 </section>
 
 @code {
-    private List<BookModel>? books; 
-    private List<BookModel>? filteredBooks; 
-    private string searchQuery = string.Empty; 
+    private List<BookModel> books = new();
+    private List<GenreModel> genres = new();
+    private List<BookModel> filteredBooks = new();
+
+    private string searchQuery = "";
+    private HashSet<int> selectedGenres = new();
+    private bool isDropdownOpen = false;
 
     protected override async Task OnInitializedAsync()
     {
-        books = await DbContext.Books.ToListAsync(); 
-        filteredBooks = books; 
+        books = await DbContext.Books.Include(b => b.BookGenres)
+                                     .ThenInclude(bg => bg.Genre)
+                                     .ToListAsync();
+
+        genres = await DbContext.Genres.ToListAsync();
+
+        FilterBooks();
     }
 
-    private void SearchBooks()
+    private void FilterBooks()
     {
-        if (string.IsNullOrEmpty(searchQuery))
+        filteredBooks = books
+            .Where(b => (string.IsNullOrWhiteSpace(searchQuery) || b.Title.Contains(searchQuery, StringComparison.OrdinalIgnoreCase)) &&
+                        (selectedGenres.Count == 0 || b.BookGenres.Any(bg => selectedGenres.Contains(bg.Genre.Id))))
+            .ToList();
+    }
+
+    private void ToggleDropdown()
+    {
+        isDropdownOpen = !isDropdownOpen;
+    }
+
+    private void ToggleGenre(int genreId)
+    {
+        if (selectedGenres.Contains(genreId))
         {
-            filteredBooks = books;
+            selectedGenres.Remove(genreId);
         }
         else
         {
-            filteredBooks = books?.Where(book =>
-                (book.Title?.Contains(searchQuery, StringComparison.OrdinalIgnoreCase) ?? false) ||
-                (book.Author?.Contains(searchQuery, StringComparison.OrdinalIgnoreCase) ?? false)
-            ).ToList();
+            selectedGenres.Add(genreId);
         }
+        FilterBooks();
     }
 }
-

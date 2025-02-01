@@ -20,11 +20,9 @@ namespace PageKeep.dbcontext
         {
             base.OnModelCreating(modelBuilder);
 
-            // Konfigurácia zloženého primárneho kľúča pre BookGenreModel
             modelBuilder.Entity<BookGenreModel>()
                 .HasKey(bg => new { bg.BookId, bg.GenreId });
 
-            // Konfigurácia vzťahov pre BookGenreModel
             modelBuilder.Entity<BookGenreModel>()
                 .HasOne(bg => bg.Book)
                 .WithMany(b => b.BookGenres)
