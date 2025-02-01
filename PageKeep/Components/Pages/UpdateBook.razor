@@ -1,9 +1,8 @@
 ﻿@page "/edit-book/{BookId:int}"
 
-@    using PageKeep.Models
-@    using PageKeep.dbcontext
-@    using Microsoft.AspNetCore.Components.Authorization
-@    using Microsoft.AspNetCore.Authorization
+@using PageKeep.dbcontext
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Authorization
 @inject AppDbContext DbContext
 @inject NavigationManager NavManager
 @inject AuthenticationStateProvider AuthStateProvider
