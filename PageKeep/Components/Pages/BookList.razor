@@ -1,4 +1,6 @@
 ﻿@page "/books"
+@using System.Text
+@using System.Globalization
 
 @inject PageKeep.dbcontext.AppDbContext DbContext
 @rendermode InteractiveServer
@@ -78,10 +80,25 @@
 
     private void FilterBooks()
     {
+        string normalizedQuery = RemoveDiacritics(searchQuery)?.ToLower();
+
         filteredBooks = books
-            .Where(b => (string.IsNullOrWhiteSpace(searchQuery) || b.Title.Contains(searchQuery, StringComparison.OrdinalIgnoreCase)) &&
+            .Where(b => (string.IsNullOrWhiteSpace(normalizedQuery) || 
+                         RemoveDiacritics(b.Title).ToLower().Contains(normalizedQuery) || 
+                         RemoveDiacritics(b.Author).ToLower().Contains(normalizedQuery)) &&
                         (selectedGenres.Count == 0 || b.BookGenres.Any(bg => selectedGenres.Contains(bg.Genre.Id))))
             .ToList();
+    }
+
+    private string RemoveDiacritics(string text)
+    {
+        if (string.IsNullOrEmpty(text))
+            return text;
+
+        return string.Concat(
+            text.Normalize(NormalizationForm.FormD)
+                .Where(c => CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
+        ).Normalize(NormalizationForm.FormC);
     }
 
     private void ToggleDropdown()
