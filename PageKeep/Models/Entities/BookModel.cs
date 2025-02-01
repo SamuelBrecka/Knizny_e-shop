@@ -1,4 +1,4 @@
-﻿namespace PageKeep.Models
+﻿namespace PageKeep.Models.Entities
 
 {
     public class BookModel

@@ -1,5 +1,5 @@
 ﻿@page "/books"
-@using Microsoft.EntityFrameworkCore
+@    using Microsoft.EntityFrameworkCore
 @inject PageKeep.dbcontext.AppDbContext DbContext
 @rendermode InteractiveServer
 
@@ -34,8 +34,8 @@
 </section>
 
 @code {
-    private List<PageKeep.Models.BookModel>? books; 
-    private List<PageKeep.Models.BookModel>? filteredBooks; 
+    private List<BookModel>? books; 
+    private List<BookModel>? filteredBooks; 
     private string searchQuery = string.Empty; 
 
     protected override async Task OnInitializedAsync()

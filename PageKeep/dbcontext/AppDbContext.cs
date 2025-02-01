@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PageKeep.Models.Entities;
-using PageKeep.Models;
 
 namespace PageKeep.dbcontext
 {

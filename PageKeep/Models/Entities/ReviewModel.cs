@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PageKeep.Models
+namespace PageKeep.Models.Entities
 {
     public class ReviewModel
     {
@@ -10,6 +10,9 @@ namespace PageKeep.Models
 
         [Required]
         public int BookId { get; set; }
+
+        [ForeignKey("BookId")]
+        public BookModel Book { get; set; }
 
         [Required]
         [MaxLength(500)]
@@ -21,8 +24,5 @@ namespace PageKeep.Models
 
         [Required]
         public DateTime CreatedAt { get; set; }
-
-        [ForeignKey("BookId")]
-        public BookModel Book { get; set; }
     }
 }

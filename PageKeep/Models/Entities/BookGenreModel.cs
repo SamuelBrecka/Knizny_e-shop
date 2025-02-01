@@ -1,5 +1,5 @@
 ﻿using PageKeep.Components.Pages;
-using PageKeep.Models;
+using PageKeep.Models.Entities;
 
 public class BookGenreModel
 {
