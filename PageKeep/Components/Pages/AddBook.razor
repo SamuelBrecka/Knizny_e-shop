@@ -12,38 +12,59 @@
             <div class="container">
                 <h2>Pridať knihu</h2>
                 <div class="edit-book-form">
-                    <EditForm Model="@BookModel" OnValidSubmit="BookAdd" FormName="FormAddBook">
+                    <EditForm Model="@Book" OnValidSubmit="BookAdd" FormName="FormAddBook">
                         <DataAnnotationsValidator />
                         <ValidationSummary />
 
                         <div class="form-group">
                             <label for="title">Názov</label>
-                            <InputText id="title" class="form-control" @bind-Value="BookModel.Title" placeholder="Zadajte názov knihy" />
-                            <ValidationMessage For="() => BookModel.Title" />
+                            <InputText id="title" class="form-control" @bind-Value="Book.Title" placeholder="Zadajte názov knihy" />
+                            <ValidationMessage For="() => Book.Title" />
                         </div>
 
                         <div class="form-group">
                             <label for="author">Autor</label>
-                            <InputText id="author" class="form-control" @bind-Value="BookModel.Author" placeholder="Zadajte meno autora" />
-                            <ValidationMessage For="() => BookModel.Author" />
+                            <InputText id="author" class="form-control" @bind-Value="Book.Author" placeholder="Zadajte meno autora" />
+                            <ValidationMessage For="() => Book.Author" />
                         </div>
 
                         <div class="form-group">
                             <label for="price">Cena</label>
-                            <InputNumber id="price" class="form-control" @bind-Value="BookModel.Price" placeholder="Zadajte cenu" />
-                            <ValidationMessage For="() => BookModel.Price" />
+                            <InputNumber id="price" class="form-control" @bind-Value="Book.Price" placeholder="Zadajte cenu" />
+                            <ValidationMessage For="() => Book.Price" />
                         </div>
-
+                        
+                        
                         <div class="form-group">
                             <label for="image">URL obrázka</label>
-                            <InputText id="image" class="form-control" @bind-Value="BookModel.Image" placeholder="Zadajte URL obrázka" />
-                            <ValidationMessage For="() => BookModel.Image" />
+                            <InputText id="image" class="form-control" @bind-Value="Book.Image" placeholder="Zadajte URL obrázka" />
+                            <ValidationMessage For="() => Book.Image" />
+                        </div> 
+                        
+                        <div class="form-group">
+                            <label for="imageUpload">Nahrať obrázok (.jpg, .jpeg)</label>
+                            <InputFile OnChange="HandleFileUpload" accept=".jpg,.jpeg" />
                         </div>
-
+                        
                         <div class="form-group">
                             <label for="description">Popis</label>
-                            <InputTextArea id="description" class="form-control" @bind-Value="BookModel.Description" placeholder="Zadajte popis knihy" />
-                            <ValidationMessage For="() => BookModel.Description" />
+                            <InputTextArea id="description" class="form-control" @bind-Value="Book.Description" placeholder="Zadajte popis knihy" />
+                            <ValidationMessage For="() => Book.Description" />
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="genre">Žáner knihy</label>
+                            <div class="genre-checkboxes">
+                                @foreach (var genre in Genres)
+                                {
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="genre-@genre.Id" value="@genre.Id"
+                                               checked="@selectedGenres.Contains(genre.Id)"
+                                               @onchange="e => ToggleGenre(genre.Id, e.Value.ToString())" />
+                                        <label for="genre-@genre.Id">@genre.Name</label>
+                                    </div>
+                                }
+                            </div>
                         </div>
 
                         <div class="form-actions">
@@ -69,27 +90,55 @@
 </AuthorizeView>
 
 @code {
-    private BookModel BookModel { get; set; } = new();
+    private BookModel Book { get; set; } = new();
+    private List<GenreModel> Genres = new();
+    private List<int> selectedGenres = new();    
     private string? SuccessMessage;
 
     protected override async Task OnInitializedAsync()
     {
+        Genres = await DbContext.Genres.ToListAsync();
+
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
 
         if (!user.IsInRole("Admin"))
         {
             NavManager.NavigateTo("/access-denied");
-            return;
+        }
+    }
+
+    private void ToggleGenre(int genreId, string value)
+    {
+        if (selectedGenres.Contains(genreId))
+        {
+            selectedGenres.Remove(genreId);
+        }
+        else
+        {
+            selectedGenres.Add(genreId);
+        }
+    }
+
+    private async Task HandleFileUpload(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        if (file != null)
+        {
+            using var stream = new MemoryStream();
+            await file.OpenReadStream().CopyToAsync(stream);
+            Book.ImageFile = stream.ToArray();
         }
     }
 
     private async Task BookAdd()
     {
-        DbContext.Books.Add(BookModel);
+        Book.BookGenres = selectedGenres.Select(gId => new BookGenreModel { GenreId = gId }).ToList();
+
+        DbContext.Books.Add(Book);
         await DbContext.SaveChangesAsync();
         SuccessMessage = "Kniha bola úspešne pridaná!";
-        BookModel = new BookModel();
+        Book = new BookModel();
     }
 
     private void NavigateBack()

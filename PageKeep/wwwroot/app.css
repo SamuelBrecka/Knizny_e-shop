@@ -123,7 +123,7 @@ nav ul li a:hover {
             background-color: #444;
         }
 
-@media (max-width: 400px) {
+@media (max-width: 550px) {
     .title-bar {
         justify-content: left;
         padding-left: 13px;
@@ -131,6 +131,10 @@ nav ul li a:hover {
 
     .nav-menu {
         justify-content: left;
+    }
+
+    .user-message {
+        display: none;
     }
 }
 
@@ -346,7 +350,6 @@ nav ul li a:hover {
 
             .genres ul li {
                 background-color: #f4f4f9;
-                padding: 5px 10px;
                 margin-bottom: 5px;
                 border-radius: 5px;
                 display: inline-block;
@@ -657,7 +660,6 @@ nav ul li a:hover {
         .form-group label {
             font-weight: bold;
             display: block;
-            margin-bottom: 5px;
         }
 
     .form-control {
@@ -697,6 +699,24 @@ nav ul li a:hover {
         border-radius: 5px;
     }
 
+.genre-checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    width: 45%; /* 2 ståpce ved¾a seba */
+}
+
+    .checkbox-item input {
+        margin-right: 8px;
+    }
+
+
+
 
     /*Update*/
     .edit-book-section {
@@ -727,14 +747,12 @@ nav ul li a:hover {
     .edit-book-form label {
         font-size: 16px;
         font-weight: bold;
-        margin-bottom: 5px;
         display: block;
         color: #555;
     }
 
     .edit-book-form input,
     .edit-book-form textarea {
-        width: 100%;
         padding: 10px;
         font-size: 14px;
         border: 1px solid #ccc;
