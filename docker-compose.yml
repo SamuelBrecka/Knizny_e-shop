@@ -1,0 +1,6 @@
+services:
+    pagekeep:
+        image: ${DOCKER_REGISTRY-}pagekeep
+        build:
+            context: .
+            dockerfile: PageKeep/Dockerfile

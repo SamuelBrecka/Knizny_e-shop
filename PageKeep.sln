@@ -5,6 +5,8 @@ VisualStudioVersion = 17.12.35514.174
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PageKeep", "PageKeep\PageKeep.csproj", "{7920ABFA-A961-446B-BB38-2375B9895E1A}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{59AB6908-81AE-45FE-98F4-B985F1F474FA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{7920ABFA-A961-446B-BB38-2375B9895E1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7920ABFA-A961-446B-BB38-2375B9895E1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7920ABFA-A961-446B-BB38-2375B9895E1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59AB6908-81AE-45FE-98F4-B985F1F474FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59AB6908-81AE-45FE-98F4-B985F1F474FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59AB6908-81AE-45FE-98F4-B985F1F474FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59AB6908-81AE-45FE-98F4-B985F1F474FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
