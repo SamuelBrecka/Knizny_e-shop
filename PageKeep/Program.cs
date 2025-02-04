@@ -5,7 +5,7 @@ using PageKeep.Components;
 using PageKeep.dbcontext;
 
 var builder = WebApplication.CreateBuilder(args);
-
+Console.WriteLine($"Running in environment: {builder.Environment.GetType()}");
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
@@ -22,7 +22,7 @@ builder.Services.AddCascadingAuthenticationState();
 
 var connectionString = builder.Configuration.GetConnectionString("DbConnection");
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite(connectionString));
+    options.UseNpgsql(connectionString));
 
 var app = builder.Build();
 
