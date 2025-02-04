@@ -1,5 +1,7 @@
 services:
     pagekeep:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Docker
         image: ${DOCKER_REGISTRY-}pagekeep
         build:
             context: .

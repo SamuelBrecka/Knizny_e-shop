@@ -14,6 +14,10 @@ namespace PageKeep.Models.Entities
         [ForeignKey("BookId")]
         public BookModel Book { get; set; }
 
+        [ForeignKey("User")]
+        public int? UserId { get; set; }  // Nullable pre prípady anonymných recenzií
+        public UserAccount? User { get; set; }
+
         [Required]
         [MaxLength(500)]
         public string Content { get; set; }

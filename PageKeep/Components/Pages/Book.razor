@@ -2,6 +2,7 @@
 
 @inject PageKeep.dbcontext.AppDbContext DbContext
 @inject NavigationManager NavManager
+@inject AuthenticationStateProvider AuthStateProvider
 @rendermode InteractiveServer
 
 @if (CurrentBook != null)
@@ -109,7 +110,7 @@ else
 @code {
     [Parameter]
     public int BookId { get; set; }
-
+    private UserAccount? CurrentUser;
     private BookModel? CurrentBook;
 
     private List<ReviewModel> Reviews;
@@ -117,11 +118,20 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
         CurrentBook = await DbContext.Books
-            .Include(b => b.BookGenres) // Načítaj BookGenres
-            .ThenInclude(bg => bg.Genre) // Načítaj Genre pre každý BookGenre
+            .Include(b => b.BookGenres)
+            .ThenInclude(bg => bg.Genre)
             .FirstOrDefaultAsync(b => b.Id == BookId);
         Reviews = await DbContext.Reviews.Where(r => r.BookId == BookId).ToListAsync();
+
+        if (user.Identity.IsAuthenticated)
+        {
+            string username = user.Identity.Name;
+            CurrentUser = await DbContext.Users.FirstOrDefaultAsync(u => u.Username == username);
+        }
     }
 
     private void NavigateToEditBook()
@@ -141,15 +151,20 @@ else
 
     private async Task SubmitReview()
     {
-        _newReviewModel.BookId = BookId;
-        _newReviewModel.CreatedAt = DateTime.Now;
+        var newReview = new ReviewModel
+            {
+                BookId = BookId,
+                Content = _newReviewModel.Content,
+                CreatedAt = DateTime.UtcNow,
+                ReviewerName = CurrentUser.Username,
+                UserId = CurrentUser.Id
+            };
 
-        DbContext.Reviews.Add(_newReviewModel);
+        DbContext.Reviews.Add(newReview);
         await DbContext.SaveChangesAsync();
 
         Reviews = await DbContext.Reviews.Where(r => r.BookId == BookId).ToListAsync();
-
-        _newReviewModel = new();
+        _newReviewModel = new ReviewModel();
     }
 
     private void NavigateToAllReviews()

@@ -137,8 +137,8 @@
 
         DbContext.Books.Add(Book);
         await DbContext.SaveChangesAsync();
-        SuccessMessage = "Kniha bola úspešne pridaná!";
         Book = new BookModel();
+        NavigateBack();
     }
 
     private void NavigateBack()

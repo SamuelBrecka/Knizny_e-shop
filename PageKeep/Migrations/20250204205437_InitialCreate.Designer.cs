@@ -12,7 +12,7 @@ using PageKeep.dbcontext;
 namespace PageKeep.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250204162705_InitialCreate")]
+    [Migration("20250204205437_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -116,9 +116,14 @@ namespace PageKeep.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BookId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Reviews");
                 });
@@ -182,7 +187,14 @@ namespace PageKeep.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("PageKeep.Models.Entities.UserAccount", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.Navigation("Book");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("GenreModel", b =>

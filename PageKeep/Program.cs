@@ -3,9 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PageKeep.Components;
 using PageKeep.dbcontext;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
-Console.WriteLine($"Running in environment: {builder.Environment.GetType()}");
+
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();

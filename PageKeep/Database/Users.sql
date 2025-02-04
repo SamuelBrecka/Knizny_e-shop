@@ -1,1 +1,0 @@
-INSERT INTO "Users" ("Id", "Username", "PasswordHash", "Email", "Role") VALUES (11, 'admin', 'AQAAAAIAAYagAAAAED6916LBnrnd6maWfrLdPx2uYlUXsKF0GFXN669rI9ITvtcn0I11H0rMdP1WHIr0dg==', 'admin@example.com', 'Admin');
