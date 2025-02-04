@@ -11,7 +11,7 @@
         <h2>Zoznam kníh</h2>
 
         <div class="search-filter-container">
-            <input type="text" class="form-control search-box" @bind="searchQuery" @bind:event="oninput" @onkeypress="HandleEnterKey" placeholder="Vyhľadajte knihu..." />
+            <input type="text" class="form-control search-box" @bind="searchQuery" @bind:event="oninput" @bind:after="FilterBooks" placeholder="Vyhľadajte knihu..." />
 
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" @onclick="ToggleDropdown">
