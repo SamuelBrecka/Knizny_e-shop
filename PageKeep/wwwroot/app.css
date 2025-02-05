@@ -9,7 +9,7 @@ body {
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1000px;
     margin: 0 auto;
     padding: 0 20px;
 }
@@ -918,72 +918,72 @@ nav ul li a:hover {
 
 
 
-    /*Zoznam knih*/
-    .books-section {
-        padding: 40px 0;
-        background-color: #f4f4f4;
+/*Zoznam knih*/
+.books-section {
+    padding: 40px 0;
+    background-color: #f4f4f4;
+}
+
+.book-list-container {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.search-input {
+    flex: 1;
+    padding: 5px;
+    font-size: 14px;
+}
+
+.search-button {
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.search-button:hover {
+    background-color: #0056b3;
+}
+
+
+.book {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 200px;
+}
+
+    .book img {
+        max-width: 100%;
+        max-height: 440px;
+        height: auto;
+        border-radius: 10px;
     }
 
-    .container {
-        max-width: 1500px;
-        margin: 0 auto;
-        padding: 20px;
-    }
-
-    .search-bar {
-        display: flex;
-        align-items: center;
-        gap: 10px;
+    .book h3 {
+        font-size: 18px;
         margin: 10px 0;
     }
 
-    .search-input {
-        flex: 1;
-        padding: 5px;
+    .book p {
         font-size: 14px;
+        color: #555;
     }
-
-    .search-button {
-        padding: 6px 12px;
-        font-size: 14px;
-        line-height: 1.5;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-        .search-button:hover {
-            background-color: #0056b3;
-        }
-
-
-    .book {
-        background-color: white;
-        padding: 20px;
-        border-radius: 10px;
-        text-align: center;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        width: 200px;
-    }
-
-        .book img {
-            max-width: 100%;
-            max-height: 440px;
-            height: auto;
-            border-radius: 10px;
-        }
-
-        .book h3 {
-            font-size: 18px;
-            margin: 10px 0;
-        }
-
-        .book p {
-            font-size: 14px;
-            color: #555;
-        }
 
     .dropdown {
         margin-left: 1vh;
