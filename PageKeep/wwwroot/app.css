@@ -911,6 +911,10 @@ nav ul li a:hover {
 
 
     /*Reviews*/
+    .review-title {
+        padding-left: 20px;
+    }
+
     .review-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -967,7 +971,6 @@ nav ul li a:hover {
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-/* Štıl pre tlaèidlo Upravi */
 .btn-edit-review {
     background-color: #ffc107;
     color: #000;
@@ -978,7 +981,6 @@ nav ul li a:hover {
         transform: scale(1.05);
     }
 
-/* Štıl pre tlaèidlo Vymaza */
 .btn-delete-review {
     background-color: #dc3545;
     color: #fff;
@@ -989,7 +991,6 @@ nav ul li a:hover {
         transform: scale(1.05);
     }
 
-/* Štıl pre tlaèidlo Uloi */
 .btn-save-review {
     background-color: #28a745;
     color: #fff;
@@ -1000,7 +1001,6 @@ nav ul li a:hover {
         transform: scale(1.05);
     }
 
-/* Štıl pre tlaèidlo Zruši */
 .btn-cancel-review {
     background-color: #6c757d;
     color: #fff;

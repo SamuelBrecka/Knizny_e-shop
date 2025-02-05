@@ -4,7 +4,7 @@
 @inject AuthenticationStateProvider AuthStateProvider
 @rendermode InteractiveServer
 
-<h3>Recenzie pre knihu</h3>
+<h3 class ="review-title">Recenzie pre knihu</h3>
 
 <div class="review-grid">
     @if (ReviewList == null || !ReviewList.Any())
@@ -63,7 +63,7 @@
             string username = user.Identity.Name;
             CurrentUser = await DbContext.Users.FirstOrDefaultAsync(u => u.Username == username);
         }
-        ReviewList = await DbContext.Reviews.ToListAsync();
+        ReviewList = await DbContext.Reviews.Where(r => r.BookId == BookId).ToListAsync();
     }
 
     private void StartEditing(int reviewId, string currentContent)
@@ -81,7 +81,7 @@
             {
                 review.Content = EditingReviewContent;
                 await DbContext.SaveChangesAsync();
-                ReviewList = await DbContext.Reviews.ToListAsync();
+                ReviewList = await DbContext.Reviews.Where(r => r.BookId == BookId).ToListAsync();
             }
         }
         CancelEdit();
@@ -100,7 +100,7 @@
         {
             DbContext.Reviews.Remove(review);
             await DbContext.SaveChangesAsync();
-            ReviewList = await DbContext.Reviews.ToListAsync();
+            ReviewList = await DbContext.Reviews.Where(r => r.BookId == BookId).ToListAsync();
         }
     }
 }

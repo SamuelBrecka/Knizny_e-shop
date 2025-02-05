@@ -125,7 +125,11 @@ else
             .Include(b => b.BookGenres)
             .ThenInclude(bg => bg.Genre)
             .FirstOrDefaultAsync(b => b.Id == BookId);
-        Reviews = await DbContext.Reviews.Where(r => r.BookId == BookId).ToListAsync();
+        Reviews = await DbContext.Reviews
+            .Where(r => r.BookId == BookId)
+            .OrderByDescending(r => r.CreatedAt)
+            .Take(3)
+            .ToListAsync();
 
         if (user.Identity.IsAuthenticated)
         {
