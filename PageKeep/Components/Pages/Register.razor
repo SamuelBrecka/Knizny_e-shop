@@ -13,30 +13,31 @@
     <div class="login-box">
         <h2>Registrácia</h2>
         <EditForm Model="@Model" OnValidSubmit="RegisterUser" FormName="RegisterForm">
-            <ValidationSummary />
+            <DataAnnotationsValidator />
+            <ValidationSummary/>
 
             <div class="form-group">
                 <label for="username">Používateľské meno</label>
-                <InputText id="username" @bind-Value="Model.UserName" class="form-control" placeholder="Zadajte používateľské meno" />
-                <ValidationMessage For="() => Model.UserName" />
+                <InputText id="username" @bind-Value="Model.UserName" class="form-control" placeholder="Zadajte používateľské meno"/>
+                <ValidationMessage For="() => Model.UserName"/>
             </div>
 
             <div class="form-group">
                 <label for="email">E-mail</label>
-                <InputText id="email" @bind-Value="Model.Email" class="form-control" placeholder="Zadajte e-mail" />
-                <ValidationMessage For="() => Model.Email" />
+                <InputText id="email" @bind-Value="Model.Email" class="form-control" placeholder="Zadajte e-mail"/>
+                <ValidationMessage For="() => Model.Email"/>
             </div>
 
             <div class="form-group">
                 <label for="password">Heslo</label>
-                <InputText id="password" @bind-Value="Model.Password" type="password" placeholder="Zadajte heslo" class="form-control" />
-                <ValidationMessage For="() => Model.Password" />
+                <InputText id="password" @bind-Value="Model.Password" type="password" placeholder="Zadajte heslo" class="form-control"/>
+                <ValidationMessage For="() => Model.Password"/>
             </div>
 
             <div class="form-group">
                 <label for="confirmPassword">Potvrdenie hesla</label>
-                <InputText id="confirmPassword" @bind-Value="Model.ConfirmPassword" type="password" placeholder="Zopakujte heslo" class="form-control" />
-                <ValidationMessage For="() => Model.ConfirmPassword" />
+                <InputText id="confirmPassword" @bind-Value="Model.ConfirmPassword" type="password" placeholder="Zopakujte heslo" class="form-control"/>
+                <ValidationMessage For="() => Model.ConfirmPassword"/>
             </div>
 
             <div class="mb-3 text-center">

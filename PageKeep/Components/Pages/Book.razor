@@ -12,7 +12,7 @@
 
         <div class="main-content">
             <div class="container-book">
-                <div class="image-container">
+                <div class="book-image-container">
                     <img src="@CurrentBook.Image" alt="@CurrentBook.Title"/>
                 </div>
                 <div class="text-container">
@@ -53,13 +53,6 @@
                     <div class="add-review">
                         <h3>Pridať recenziu</h3>
                         <EditForm Model="@_newReviewModel" OnValidSubmit="SubmitReview" FormName="formAddReviewModel" Context="contextAddReview">
-                            <DataAnnotationsValidator />
-                            <ValidationSummary />
-
-                            <div class="form-group">
-                                <label for="reviewerName">Meno</label>
-                                <InputText id="reviewerName" @bind-value="_newReviewModel.ReviewerName" class="form-control" />
-                            </div>
 
                             <div class="form-group">
                                 <label for="content">Recenzia</label>

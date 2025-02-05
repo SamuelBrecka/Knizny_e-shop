@@ -24,7 +24,7 @@ namespace PageKeep.Models.Entities
 
         [Required]
         [MaxLength(100)]
-        public string ReviewerName { get; set; }
+        public string? ReviewerName { get; set; }
 
         [Required]
         public DateTime CreatedAt { get; set; }
