@@ -1,26 +1,45 @@
 ﻿@page "/reviews/{BookId:int}"
 
 @inject PageKeep.dbcontext.AppDbContext DbContext
+@inject AuthenticationStateProvider AuthStateProvider
+@rendermode InteractiveServer
 
 <h3>Recenzie pre knihu</h3>
 
 <div class="review-grid">
-    @if (reviewList == null || !reviewList.Any())
+    @if (ReviewList == null || !ReviewList.Any())
     {
         <p>Zatiaľ nie sú k dispozícii žiadne recenzie.</p>
     }
     else
     {
-        @foreach (var review in reviewList)
+        @foreach (var review in ReviewList)
         {
             <div class="review-card">
                 <div class="review-header">
                     <h4>@review.ReviewerName</h4>
-                    <small>@review.CreatedAt.ToString("d. MMM yyyy")</small>
                 </div>
-                <div class="review-content">
-                    <p>@review.Content</p>
-                </div>
+                @if (review.Id == EditingReviewId)
+                {
+                    <textarea @bind="EditingReviewContent" class="edit-textarea"></textarea>
+                    <button class="btn-save-review" @onclick="SaveEditedReview">Uložiť</button>
+                    <button class="btn-cancel-review" @onclick="CancelEdit">Zrušiť</button>
+                }
+                else
+                {
+                    <div class="review-content">
+                        <p>@review.Content</p>
+                        <small>@review.CreatedAt.ToString("d. MMM yyyy")</small>
+
+                        @if (review.UserId == CurrentUser.Id)
+                        {
+                            <div class="review-actions">
+                                <button class="btn-edit-review" @onclick="() => StartEditing(review.Id, review.Content)">Upraviť</button>
+                                <button class="btn-delete-review" @onclick="() => DeleteReview(review.Id)">Vymazať</button>
+                            </div>
+                        }
+                    </div>
+                }
             </div>
         }
     }
@@ -29,14 +48,59 @@
 @code {
     [Parameter]
     public int BookId { get; set; }
-
-    private List<ReviewModel> reviewList;
+    private List<ReviewModel> ReviewList = new();
+    private UserAccount? CurrentUser;
+    private int? EditingReviewId = null;
+    private string EditingReviewContent = "";
 
     protected override async Task OnInitializedAsync()
     {
-        reviewList = await DbContext.Reviews
-            .Where(r => r.BookId == BookId)
-            .OrderByDescending(r => r.CreatedAt)
-            .ToListAsync();
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            string username = user.Identity.Name;
+            CurrentUser = await DbContext.Users.FirstOrDefaultAsync(u => u.Username == username);
+        }
+        ReviewList = await DbContext.Reviews.ToListAsync();
+    }
+
+    private void StartEditing(int reviewId, string currentContent)
+    {
+        EditingReviewId = reviewId;
+        EditingReviewContent = currentContent;
+    }
+
+    private async Task SaveEditedReview()
+    {
+        if (EditingReviewId != null)
+        {
+            ReviewModel review = await DbContext.Reviews.FindAsync(EditingReviewId);
+            if (review != null && review.UserId == CurrentUser.Id)
+            {
+                review.Content = EditingReviewContent;
+                await DbContext.SaveChangesAsync();
+                ReviewList = await DbContext.Reviews.ToListAsync();
+            }
+        }
+        CancelEdit();
+    }
+
+    private void CancelEdit()
+    {
+        EditingReviewId = null;
+        EditingReviewContent = "";
+    }
+
+    private async Task DeleteReview(int reviewId)
+    {
+        var review = await DbContext.Reviews.FindAsync(reviewId);
+        if (review != null && review.UserId == CurrentUser.Id)
+        {
+            DbContext.Reviews.Remove(review);
+            await DbContext.SaveChangesAsync();
+            ReviewList = await DbContext.Reviews.ToListAsync();
+        }
     }
 }

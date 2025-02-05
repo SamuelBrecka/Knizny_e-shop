@@ -708,7 +708,7 @@ nav ul li a:hover {
 .checkbox-item {
     display: flex;
     align-items: center;
-    width: 45%; /* 2 stÂpce vedæa seba */
+    width: 45%;
 }
 
     .checkbox-item input {
@@ -952,6 +952,63 @@ nav ul li a:hover {
     .review-content {
         color: #444;
         line-height: 1.5;
+    }
+
+
+.btn-edit-review,
+.btn-delete-review,
+.btn-save-review,
+.btn-cancel-review {
+    padding: 8px 15px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* ät˝l pre tlaËidlo Upraviù */
+.btn-edit-review {
+    background-color: #ffc107;
+    color: #000;
+}
+
+    .btn-edit-review:hover {
+        background-color: #e0a800;
+        transform: scale(1.05);
+    }
+
+/* ät˝l pre tlaËidlo Vymazaù */
+.btn-delete-review {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+    .btn-delete-review:hover {
+        background-color: #c82333;
+        transform: scale(1.05);
+    }
+
+/* ät˝l pre tlaËidlo Uloûiù */
+.btn-save-review {
+    background-color: #28a745;
+    color: #fff;
+}
+
+    .btn-save-review:hover {
+        background-color: #218838;
+        transform: scale(1.05);
+    }
+
+/* ät˝l pre tlaËidlo Zruöiù */
+.btn-cancel-review {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+    .btn-cancel-review:hover {
+        background-color: #5a6268;
+        transform: scale(1.05);
     }
 
     @media (max-width: 768px) {
