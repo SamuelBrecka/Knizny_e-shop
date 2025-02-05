@@ -31,15 +31,18 @@
                         <p>@review.Content</p>
                         <small>@review.CreatedAt.ToString("d. MMM yyyy")</small>
 
-                        @if (review.UserId == CurrentUser.Id || CurrentUser.Role == "Admin")
+                        @if (CurrentUser != null)
                         {
-                            <div class="review-actions">
-                                @if (CurrentUser.Role == "User")
-                                {
-                                    <button class="btn-edit-review" @onclick="() => StartEditing(review.Id, review.Content)">Upraviť</button>
-                                }
-                                <button class="btn-delete-review" @onclick="() => DeleteReview(review.Id)">Vymazať</button>
-                            </div>
+                            @if (review.UserId == CurrentUser.Id || CurrentUser.Role == "Admin")
+                            {
+                                <div class="review-actions">
+                                    @if (CurrentUser.Role == "User")
+                                    {
+                                        <button class="btn-edit-review" @onclick="() => StartEditing(review.Id, review.Content)">Upraviť</button>
+                                    }
+                                    <button class="btn-delete-review" @onclick="() => DeleteReview(review.Id)">Vymazať</button>
+                                </div>
+                            }
                         }
                     </div>
                 }

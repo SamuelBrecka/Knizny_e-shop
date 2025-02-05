@@ -136,6 +136,10 @@ nav ul li a:hover {
     .user-message {
         display: none;
     }
+
+    .nav-menu li a {
+        padding: 5px;
+    }
 }
 
     /*Home body*/
