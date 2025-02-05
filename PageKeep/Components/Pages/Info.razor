@@ -1,0 +1,109 @@
+﻿@page "/info"
+@inject PageKeep.dbcontext.AppDbContext DbContext
+@inject NavigationManager NavManager
+@rendermode InteractiveServer
+
+
+<div class="intro">
+    <div class="text">
+        <h2>Vitajte v našom knižnom svete!</h2>
+        <p>Objavte nekonečné možnosti čítania a ponorte sa do príbehov, ktoré vás zmenia.</p>
+    </div>
+    <div class="slideshow-container">
+        <div class="image-container">
+            <img src="@CurrentImage" alt="Knižný obrázok" class="fade-image @(IsFading ? "fade-out" : "fade-in")" />
+        </div>
+    </div>
+</div>
+
+<div class="benefits">
+    <h3>Prečo si vybrať nás?</h3>
+    <ul>
+        @foreach (var benefit in benefits)
+        {
+            <li>@benefit</li>
+        }
+    </ul>
+</div>
+
+
+@code {
+    private List<string> BookImages = new();
+    private string CurrentImage = "/res/dena.jpg";
+    private int CurrentImageIndex = 0;
+    private bool IsFading = false;
+    private bool AutoSlide = true;
+    private List<string> benefits = new()
+    {
+        "Široký výber kníh",
+        "Doručenie zdarma pri objednávkach nad 30€",
+        "Exkluzívne recenzie a odporúčania",
+        "Možnosť predobjednávky",
+        "Zľavy pre verných zákazníkov"
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        var books = await DbContext.Books.ToListAsync();
+
+        if (books.Any())
+        {
+            BookImages = books.Select(b => b.Image).ToList();
+            CurrentImage = BookImages[0];
+        }
+
+        _ = ChangeImagesPeriodically();
+    }
+
+    private async Task ChangeImagesPeriodically()
+    {
+        while (AutoSlide)
+        {
+            await Task.Delay(3000);
+
+            if (BookImages.Count > 0)
+            {
+                await NextImage();
+            }
+        }
+    }
+
+    private async Task NextImage()
+    {
+        IsFading = true;
+        StateHasChanged();
+        await Task.Delay(500);
+
+        CurrentImageIndex = (CurrentImageIndex + 1) % BookImages.Count;
+        CurrentImage = BookImages[CurrentImageIndex];
+
+        IsFading = false;
+        StateHasChanged();
+    }
+
+    private async Task PreviousImage()
+    {
+        IsFading = true;
+        StateHasChanged();
+        await Task.Delay(500);
+
+        CurrentImageIndex = (CurrentImageIndex - 1 + BookImages.Count) % BookImages.Count;
+        CurrentImage = BookImages[CurrentImageIndex];
+
+        IsFading = false;
+        StateHasChanged();
+    }
+
+    private async Task SetImage(int index)
+    {
+        IsFading = true;
+        StateHasChanged();
+        await Task.Delay(500);
+
+        CurrentImageIndex = index;
+        CurrentImage = BookImages[CurrentImageIndex];
+
+        IsFading = false;
+        StateHasChanged();
+    }
+}
