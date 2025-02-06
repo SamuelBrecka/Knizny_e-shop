@@ -39,7 +39,7 @@
                 @foreach (var book in filteredBooks)
                 {
                     <a href="/book/@book.Id" class="book-list">
-                        <img src="@book.Image" alt="@book.Title" />
+                        <img src="@GetBookImage(book)" alt="@book.Title" />
                         <h3>@book.Title</h3>
                         <p>Autor: @book.Author</p>
                         <p>Cena: @book.Price €</p>
@@ -70,12 +70,13 @@
         FilterBooks();
     }
 
-    private void HandleEnterKey(KeyboardEventArgs e)
+    private string GetBookImage(BookModel book)
     {
-        if (e.Key == "Enter")
+        if (book.ImageFile != null)
         {
-            FilterBooks();
+            return $"data:image/jpeg;base64,{Convert.ToBase64String(book.ImageFile)}";
         }
+        return book.Image;
     }
 
     private void FilterBooks()
