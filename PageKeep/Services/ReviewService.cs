@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PageKeep.dbcontext;
-using PageKeep.Models.Entities;
+using PageKeep.Models;
 
-namespace PageKeep.Models.Services
+namespace PageKeep.Services
 {
     public class ReviewService
     {

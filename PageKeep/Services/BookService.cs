@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PageKeep.Models.Entities;
 using PageKeep.dbcontext;
+using PageKeep.Models;
 
-namespace PageKeep.Models.Services
+namespace PageKeep.Services
 {
     public class BookService
     {
@@ -24,9 +24,9 @@ namespace PageKeep.Models.Services
         public async Task<BookModel> GetBookByIdAsync(int id)
         {
             return await _dbContext.Books
-                          .Include(b => b.BookGenres)
-                          .ThenInclude(bg => bg.Genre)
-                          .FirstOrDefaultAsync(b => b.Id == id);
+                .Include(b => b.BookGenres)
+                .ThenInclude(bg => bg.Genre)
+                .FirstOrDefaultAsync(b => b.Id == id);
         }
 
         public async Task<List<BookGenreModel>> GetBookGenresById(int bookId)

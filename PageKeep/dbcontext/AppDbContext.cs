@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using PageKeep.Models.Entities;
+using PageKeep.Models;
 
 namespace PageKeep.dbcontext
 {

@@ -4,8 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PageKeep.Components;
 using PageKeep.dbcontext;
-using PageKeep.Models.Entities;
-using PageKeep.Models.Services;
+using PageKeep.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,14 +41,11 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-
-
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     dbContext.Database.Migrate();
 }
-
 
 app.UseHttpsRedirection();
 

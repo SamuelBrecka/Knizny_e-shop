@@ -1,4 +1,4 @@
-﻿using PageKeep.Models.Entities;
+﻿namespace PageKeep.Models;
 
 public class BookGenreModel
 {

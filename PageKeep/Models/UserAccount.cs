@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PageKeep.Models.Entities
+namespace PageKeep.Models
 {
     public class UserAccount
     {

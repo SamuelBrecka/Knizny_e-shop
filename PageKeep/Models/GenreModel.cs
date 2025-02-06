@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+namespace PageKeep.Models;
+
 public class GenreModel
 {
     [Key]

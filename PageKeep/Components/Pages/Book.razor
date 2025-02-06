@@ -1,4 +1,5 @@
 ﻿@page "/book/{BookId:int}"
+@using PageKeep.Services
 
 @inject dbcontext.AppDbContext DbContext
 @inject BookService BookService
@@ -11,11 +12,10 @@
 {
     <div class="page-container">
         <div class="side-panel left"></div>
-
         <div class="main-content">
             <div class="container-book">
                 <div class="book-image-container">
-                    <img src="@CurrentBook.Image" alt="@CurrentBook.Title"/>
+                    <img src="@CurrentBook.Image" alt="@CurrentBook.Title" />
                 </div>
                 <div class="text-container">
                     <h2>@CurrentBook.Title</h2>
@@ -59,7 +59,7 @@
 
                             <div class="form-group">
                                 <label for="content">Recenzia</label>
-                                <InputTextArea id="content" @bind-value="_newReviewModel.Content" class="form-control"/>
+                                <InputTextArea id="content" @bind-value="_newReviewModel.Content" class="form-control" />
                                 <ValidationMessage For="() => _newReviewModel.Content" class="validation-errors" />
                             </div>
 
@@ -145,12 +145,12 @@ else
     private async Task SubmitReview()
     {
         var review = new ReviewModel
-        {
-            BookId = BookId,
-            UserId = CurrentUser.Id,
-            ReviewerName = CurrentUser.Username,
-            Content = _newReviewModel.Content,
-        };
+            {
+                BookId = BookId,
+                UserId = CurrentUser.Id,
+                ReviewerName = CurrentUser.Username,
+                Content = _newReviewModel.Content,
+            };
         await ReviewService.AddReviewAsync(review);
         Reviews = await ReviewService.GetReviewsAsync(BookId);
     }

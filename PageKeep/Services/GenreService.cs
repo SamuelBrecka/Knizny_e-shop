@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PageKeep.dbcontext;
+using PageKeep.Models;
 
-namespace PageKeep.Models.Services
+namespace PageKeep.Services
 {
     public class GenreService
     {

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using PageKeep.Models.Entities;
+using PageKeep.Models;
 
 public static class PasswordHasher
 {
