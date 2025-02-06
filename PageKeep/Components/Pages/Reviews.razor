@@ -7,6 +7,7 @@
 <h3 class ="review-title">Recenzie pre knihu</h3>
 
 <div class="review-grid">
+
     @if (ReviewList == null || !ReviewList.Any())
     {
         <p>Zatiaľ nie sú k dispozícii žiadne recenzie.</p>
@@ -19,11 +20,22 @@
                 <div class="review-header">
                     <h4>@review.ReviewerName</h4>
                 </div>
+
                 @if (review.Id == EditingReviewId)
                 {
-                    <textarea @bind="EditingReviewContent" class="edit-textarea"></textarea>
-                    <button class="btn-save-review" @onclick="SaveEditedReview">Uložiť</button>
-                    <button class="btn-cancel-review" @onclick="CancelEdit">Zrušiť</button>
+                    <EditForm Model="@EditingReview" OnValidSubmit="SaveEditedReview">
+                        <DataAnnotationsValidator />
+
+                        <div class="form-group">
+                            <textarea @bind="EditingReview.Content" class="edit-textarea form-control"></textarea>
+                            <ValidationMessage For="@(() => EditingReview.Content)" class="text-danger" />
+                        </div>
+
+                        <div class="review-actions">
+                            <button type="submit" class="btn-save-review">Uložiť</button>
+                            <button type="button" class="btn-cancel-review" @onclick="CancelEdit">Zrušiť</button>
+                        </div>
+                    </EditForm>
                 }
                 else
                 {
@@ -38,7 +50,7 @@
                                 <div class="review-actions">
                                     @if (CurrentUser.Role == "User")
                                     {
-                                        <button class="btn-edit-review" @onclick="() => StartEditing(review.Id, review.Content)">Upraviť</button>
+                                        <button class="btn-edit-review" @onclick="() => StartEditing(review)">Upraviť</button>
                                     }
                                     <button class="btn-delete-review" @onclick="() => DeleteReview(review.Id)">Vymazať</button>
                                 </div>
@@ -50,11 +62,11 @@
         }
     }
 </div>
-
 @code {
     [Parameter]
     public int BookId { get; set; }
     private List<ReviewModel> ReviewList = new();
+    private ReviewModel EditingReview = new();
     private UserAccount? CurrentUser;
     private int? EditingReviewId = null;
     private string EditingReviewContent = "";
@@ -72,25 +84,32 @@
         ReviewList = await DbContext.Reviews.Where(r => r.BookId == BookId).ToListAsync();
     }
 
-    private void StartEditing(int reviewId, string currentContent)
+    private void StartEditing(ReviewModel review)
     {
-        EditingReviewId = reviewId;
-        EditingReviewContent = currentContent;
+        EditingReviewId = review.Id;
+        EditingReview = new ReviewModel()
+            {
+                Id = review.Id,
+                Content = review.Content,
+                UserId = review.UserId,
+                CreatedAt = review.CreatedAt
+            };
     }
 
     private async Task SaveEditedReview()
     {
-        if (EditingReviewId != null)
+        if (EditingReviewId == null)
+            return;
+
+        var reviewToUpdate = ReviewList.FirstOrDefault(r => r.Id == EditingReviewId);
+        if (reviewToUpdate != null)
         {
-            ReviewModel review = await DbContext.Reviews.FindAsync(EditingReviewId);
-            if (review != null && review.UserId == CurrentUser.Id)
-            {
-                review.Content = EditingReviewContent;
-                await DbContext.SaveChangesAsync();
-                ReviewList = await DbContext.Reviews.Where(r => r.BookId == BookId).ToListAsync();
-            }
+            reviewToUpdate.Content = EditingReview.Content;
+            await DbContext.SaveChangesAsync();
         }
-        CancelEdit();
+
+        EditingReviewId = null;
+        EditingReview = new();
     }
 
     private void CancelEdit()
@@ -102,7 +121,7 @@
     private async Task DeleteReview(int reviewId)
     {
         var review = await DbContext.Reviews.FindAsync(reviewId);
-        if (review != null && review.UserId == CurrentUser.Id)
+        if (review != null)
         {
             DbContext.Reviews.Remove(review);
             await DbContext.SaveChangesAsync();

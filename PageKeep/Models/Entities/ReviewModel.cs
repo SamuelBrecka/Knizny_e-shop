@@ -18,11 +18,10 @@ namespace PageKeep.Models.Entities
         public int? UserId { get; set; }
         public UserAccount? User { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Pole Receniza nemôže byť prázdne")]
         [MaxLength(500)]
         public string Content { get; set; }
 
-        [Required]
         [MaxLength(100)]
         public string? ReviewerName { get; set; }
 

@@ -13,6 +13,7 @@
                 <h2>Pridať knihu</h2>
                 <div class="edit-book-form">
                     <EditForm Model="@Book" OnValidSubmit="BookAdd" FormName="FormAddBook">
+                        <DataAnnotationsValidator />
                         <ValidationSummary/>
 
                         <div class="form-group">

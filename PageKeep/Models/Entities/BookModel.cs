@@ -7,12 +7,17 @@ namespace PageKeep.Models.Entities
     {
         [Key]
         public int Id { get; set; }
-        public string? Title { get; set; }
-        public string? Author { get; set; }
-        public decimal? Price { get; set; }
+        [Required(ErrorMessage = "Pole Názov nemôže byť prázdne")]
+        public string Title { get; set; }
+        [Required(ErrorMessage = "Pole Autor nemôže byť prázdne")]
+        public string Author { get; set; }
+        [Required]
+        [Range(0, double.MaxValue, ErrorMessage = "Cena nemôže byť záporná.")]
+        public decimal Price { get; set; }
         public string? Image { get; set; }
         public byte[]? ImageFile { get; set; }
-        public string? Description { get; set; }
+        [Required(ErrorMessage = "Pole Popis nemôže byť prázdne")]
+        public string Description { get; set; }
         public ICollection<BookGenreModel> BookGenres { get; set; }
     }
 }

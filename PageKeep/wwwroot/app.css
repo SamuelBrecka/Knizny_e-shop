@@ -842,6 +842,10 @@ nav ul li a:hover {
         margin-right: 8px;
     }
 
+.validation-errors {
+    color: red;
+    font-weight: bold;
+}
 
 
 
