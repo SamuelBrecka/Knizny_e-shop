@@ -12,8 +12,8 @@ using PageKeep.dbcontext;
 namespace PageKeep.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250204205437_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250206190832_InitialCraete")]
+    partial class InitialCraete
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -70,9 +70,11 @@ namespace PageKeep.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Author")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Image")
@@ -81,10 +83,11 @@ namespace PageKeep.Migrations
                     b.Property<byte[]>("ImageFile")
                         .HasColumnType("bytea");
 
-                    b.Property<decimal?>("Price")
+                    b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -112,11 +115,10 @@ namespace PageKeep.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ReviewerName")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -158,6 +160,16 @@ namespace PageKeep.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Email = "admin@example.com",
+                            PasswordHash = "AQAAAAIAAYagAAAAEM9S18EOtAcXhbTAyAl6gL7axczRp0lddLJ3lDfO1Jl0kjU45oGaTVg3/NDT3Z2A8Q==",
+                            Role = "Admin",
+                            Username = "admin"
+                        });
                 });
 
             modelBuilder.Entity("BookGenreModel", b =>
@@ -190,7 +202,8 @@ namespace PageKeep.Migrations
                     b.HasOne("PageKeep.Models.Entities.UserAccount", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Book");
 

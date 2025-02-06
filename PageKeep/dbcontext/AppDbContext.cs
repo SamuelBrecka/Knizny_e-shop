@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using PageKeep.Models.Entities;
 
 namespace PageKeep.dbcontext
@@ -19,8 +20,6 @@ namespace PageKeep.dbcontext
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-
             modelBuilder.Entity<BookGenreModel>()
                 .HasKey(bg => new { bg.BookId, bg.GenreId });
 
@@ -39,26 +38,17 @@ namespace PageKeep.dbcontext
                 .HasForeignKey(r => r.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            SeedData(modelBuilder);
-        }
+            modelBuilder.Entity<UserAccount>()
+                .HasData(new UserAccount
+                {
+                    Id = 1,
+                    Username = "admin",
+                    Email = "admin@example.com",
+                    PasswordHash = "AQAAAAIAAYagAAAAEM9S18EOtAcXhbTAyAl6gL7axczRp0lddLJ3lDfO1Jl0kjU45oGaTVg3/NDT3Z2A8Q==",
+                    Role = "Admin"
+                });
 
-        private void SeedData(ModelBuilder modelBuilder)
-        {
-            var admin = new UserAccount
-            {
-                Id = 1,
-                Username = "admin",
-                Email = "admin@example.com",
-                PasswordHash = HashPassword("admin"), 
-                Role = "Admin"
-            };
-            modelBuilder.Entity<UserAccount>().HasData(admin);
-        }
-
-        private string HashPassword(string password)
-        {
-            var _hasher = new PasswordHasher<UserAccount>();
-            return _hasher.HashPassword(null, password);
+            base.OnModelCreating(modelBuilder);
         }
     }
 }
