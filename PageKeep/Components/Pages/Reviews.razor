@@ -1,6 +1,7 @@
 ﻿@page "/reviews/{BookId:int}"
 
-@inject PageKeep.dbcontext.AppDbContext DbContext
+@inject dbcontext.AppDbContext DbContext
+@inject ReviewViewModel ReviewVM
 @inject AuthenticationStateProvider AuthStateProvider
 @rendermode InteractiveServer
 
@@ -81,7 +82,7 @@
             string username = user.Identity.Name;
             CurrentUser = await DbContext.Users.FirstOrDefaultAsync(u => u.Username == username);
         }
-        ReviewList = await DbContext.Reviews.Where(r => r.BookId == BookId).ToListAsync();
+        ReviewList = await ReviewVM.GetReviewsAsync(BookId);
     }
 
     private void StartEditing(ReviewModel review)
@@ -98,16 +99,7 @@
 
     private async Task SaveEditedReview()
     {
-        if (EditingReviewId == null)
-            return;
-
-        var reviewToUpdate = ReviewList.FirstOrDefault(r => r.Id == EditingReviewId);
-        if (reviewToUpdate != null)
-        {
-            reviewToUpdate.Content = EditingReview.Content;
-            await DbContext.SaveChangesAsync();
-        }
-
+        await ReviewVM.EditReviewAsync(EditingReview.Id, EditingReview.Content, EditingReview.UserId);
         EditingReviewId = null;
         EditingReview = new();
     }
@@ -120,12 +112,7 @@
 
     private async Task DeleteReview(int reviewId)
     {
-        var review = await DbContext.Reviews.FindAsync(reviewId);
-        if (review != null)
-        {
-            DbContext.Reviews.Remove(review);
-            await DbContext.SaveChangesAsync();
-            ReviewList = await DbContext.Reviews.Where(r => r.BookId == BookId).ToListAsync();
-        }
+        await ReviewVM.DeleteReviewAsync(reviewId);
+        ReviewList = await ReviewVM.GetReviewsAsync(BookId);
     }
 }

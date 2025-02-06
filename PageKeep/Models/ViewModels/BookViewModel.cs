@@ -2,7 +2,7 @@
 using PageKeep.Models.Entities;
 using PageKeep.dbcontext;
 
-namespace PageKeep.ViewModels
+namespace PageKeep.Models.ViewModels
 {
     public class BookViewModel
     {

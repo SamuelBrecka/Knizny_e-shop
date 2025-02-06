@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PageKeep.Models
+namespace PageKeep.Models.ViewModels
 {
     public class LoginViewModel
     {

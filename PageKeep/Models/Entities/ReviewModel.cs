@@ -15,7 +15,7 @@ namespace PageKeep.Models.Entities
         public BookModel Book { get; set; }
 
         [ForeignKey("User")]
-        public int? UserId { get; set; }
+        public int UserId { get; set; }
         public UserAccount? User { get; set; }
 
         [Required(ErrorMessage = "Pole Receniza nemôže byť prázdne")]
@@ -26,6 +26,6 @@ namespace PageKeep.Models.Entities
         public string? ReviewerName { get; set; }
 
         [Required]
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

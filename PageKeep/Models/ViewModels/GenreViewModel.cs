@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PageKeep.dbcontext;
 
-namespace PageKeep.ViewModels
+namespace PageKeep.Models.ViewModels
 {
     public class GenreViewModel
     {

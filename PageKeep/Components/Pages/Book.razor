@@ -3,6 +3,7 @@
 @inject dbcontext.AppDbContext DbContext
 @inject BookViewModel BookVM
 @inject NavigationManager NavManager
+@inject ReviewViewModel ReviewVM
 @inject AuthenticationStateProvider AuthStateProvider
 @rendermode InteractiveServer
 
@@ -76,7 +77,7 @@
                 }
                 else
                 {
-                    @foreach (var review in Reviews)
+                    @foreach (var review in Reviews.Take(3))
                     {
                         <div class="review">
                             <h4>@review.ReviewerName</h4>
@@ -118,11 +119,7 @@ else
         var user = authState.User;
 
         CurrentBook = await BookVM.GetBookByIdAsync(BookId);
-        Reviews = await DbContext.Reviews
-            .Where(r => r.BookId == BookId)
-            .OrderByDescending(r => r.CreatedAt)
-            .Take(3)
-            .ToListAsync();
+        Reviews = await ReviewVM.GetReviewsAsync(BookId);
 
         if (user.Identity.IsAuthenticated)
         {
@@ -147,20 +144,15 @@ else
 
     private async Task SubmitReview()
     {
-        var newReview = new ReviewModel
-            {
-                BookId = BookId,
-                Content = _newReviewModel.Content,
-                CreatedAt = DateTime.UtcNow,
-                ReviewerName = CurrentUser.Username,
-                UserId = CurrentUser.Id
-            };
-
-        DbContext.Reviews.Add(newReview);
-        await DbContext.SaveChangesAsync();
-
-        Reviews = await DbContext.Reviews.Where(r => r.BookId == BookId).ToListAsync();
-        _newReviewModel = new ReviewModel();
+        var review = new ReviewModel
+        {
+            BookId = BookId,
+            UserId = CurrentUser.Id,
+            ReviewerName = CurrentUser.Username,
+            Content = _newReviewModel.Content,
+        };
+        await ReviewVM.AddReviewAsync(review);
+        Reviews = await ReviewVM.GetReviewsAsync(BookId);
     }
 
     private void NavigateToAllReviews()
