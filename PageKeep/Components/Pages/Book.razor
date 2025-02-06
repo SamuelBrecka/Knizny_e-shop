@@ -117,10 +117,7 @@ else
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
 
-        CurrentBook = await DbContext.Books
-            .Include(b => b.BookGenres)
-            .ThenInclude(bg => bg.Genre)
-            .FirstOrDefaultAsync(b => b.Id == BookId);
+        CurrentBook = await BookVM.GetBookByIdAsync(BookId);
         Reviews = await DbContext.Reviews
             .Where(r => r.BookId == BookId)
             .OrderByDescending(r => r.CreatedAt)

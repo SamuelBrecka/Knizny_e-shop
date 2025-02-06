@@ -29,6 +29,11 @@ namespace PageKeep.ViewModels
                           .FirstOrDefaultAsync(b => b.Id == id);
         }
 
+        public async Task<List<BookGenreModel>> GetBookGenresById(int bookId)
+        {
+            return await _dbContext.BookGenres.Where(bg => bg.BookId == bookId).ToListAsync();
+        }
+
         public async Task AddBookAsync(BookModel book)
         {
             _dbContext.Books.Add(book);

@@ -1,9 +1,7 @@
 ﻿@page "/add-book"
 
-@using PageKeep.dbcontext
-@using PageKeep.ViewModels
 @inject BookViewModel BookVM
-@inject AppDbContext DbContext
+@inject GenreViewModel GenreVM
 @inject NavigationManager NavManager
 @inject AuthenticationStateProvider AuthStateProvider
 @rendermode InteractiveServer
@@ -98,7 +96,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Genres = await DbContext.Genres.ToListAsync();
+        Genres = await GenreVM.GetGenresAsync();
 
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;

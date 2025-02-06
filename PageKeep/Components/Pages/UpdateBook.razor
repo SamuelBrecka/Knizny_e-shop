@@ -1,10 +1,8 @@
 ﻿@page "/edit-book/{BookId:int}"
 @using PageKeep.ViewModels
-@using PageKeep.dbcontext
-
 
 @inject BookViewModel BookVM
-@inject AppDbContext DbContext
+@inject GenreViewModel GenreVM
 @inject NavigationManager NavManager
 @inject AuthenticationStateProvider AuthStateProvider
 @rendermode InteractiveServer
@@ -112,11 +110,11 @@
         }
 
         Book = await BookVM.GetBookByIdAsync(BookId);
-        Book.BookGenres = await DbContext.BookGenres.Where(bg => bg.BookId == BookId).ToListAsync();
+        Book.BookGenres = await BookVM.GetBookGenresById(BookId);
 
         if (Book != null)
         {
-            Genres = await DbContext.Genres.ToListAsync();
+            Genres = await GenreVM.GetGenresAsync();
             SelectedGenres = Book.BookGenres.Select(bg => bg.GenreId).ToList();
         }
 

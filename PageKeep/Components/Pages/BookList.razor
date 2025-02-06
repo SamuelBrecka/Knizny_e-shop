@@ -2,8 +2,8 @@
 @using System.Text
 @using System.Globalization
 
-@inject PageKeep.dbcontext.AppDbContext DbContext
 @inject BookViewModel BookVM
+@inject GenreViewModel GenreVM
 @rendermode InteractiveServer
 
 
@@ -64,7 +64,7 @@
     {
         books = await BookVM.GetAllBooksAsync();
 
-        genres = await DbContext.Genres.ToListAsync();
+        genres = await GenreVM.GetGenresAsync();
 
         FilterBooks();
     }
