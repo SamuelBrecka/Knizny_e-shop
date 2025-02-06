@@ -1,10 +1,9 @@
 ﻿@page "/register"
 
-@using PageKeep.dbcontext
 @using System.Security.Claims
 @using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Authentication.Cookies
-@inject AppDbContext DbContext
+@inject UserAccountService UserAccountService
 @inject NavigationManager navManager
 
 <div class="login-page">
@@ -60,8 +59,8 @@
 
     private async Task RegisterUser()
     {
-        var existingUser = DbContext.Users.FirstOrDefault(u => u.Username == Model.UserName || u.Email == Model.Email);
-        if (existingUser != null)
+        
+        if (UserAccountService.IsUserRegistered(Model.Email, Model.UserName))
         {
             errorMessage = "Používateľské meno alebo e-mail už existuje.";
             return;
@@ -75,21 +74,12 @@
 
         var hashedPassword = PasswordHasher.HashPassword(Model.Password);
 
-        var newUser = new UserAccount
-            {
-                Username = Model.UserName,
-                Email = Model.Email,
-                PasswordHash = hashedPassword,
-                Role = "User" 
-            };
-
-        DbContext.Users.Add(newUser);
-        await DbContext.SaveChangesAsync();
+        await UserAccountService.RegisterUserAsync(Model.UserName, Model.Email, hashedPassword, Model);
 
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Name, Model.UserName),
-            new Claim(ClaimTypes.Role, newUser.Role)
+            new Claim(ClaimTypes.Role, "User")
         };
 
         var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

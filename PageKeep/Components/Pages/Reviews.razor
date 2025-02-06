@@ -1,6 +1,6 @@
 ﻿@page "/reviews/{BookId:int}"
 
-@inject dbcontext.AppDbContext DbContext
+@inject UserAccountService UserAccountService
 @inject ReviewService ReviewService
 @inject AuthenticationStateProvider AuthStateProvider
 @rendermode InteractiveServer
@@ -80,7 +80,7 @@
         if (user.Identity.IsAuthenticated)
         {
             string username = user.Identity.Name;
-            CurrentUser = await DbContext.Users.FirstOrDefaultAsync(u => u.Username == username);
+            CurrentUser = await UserAccountService.GetUserByNameAsyc(username);
         }
         ReviewList = await ReviewService.GetReviewsAsync(BookId);
     }

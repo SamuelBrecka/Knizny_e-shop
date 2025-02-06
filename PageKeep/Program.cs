@@ -23,6 +23,7 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<BookService>();
 builder.Services.AddScoped<GenreService>();
 builder.Services.AddScoped<ReviewService>();
+builder.Services.AddScoped<UserAccountService>();
 
 
 var connectionString = builder.Configuration.GetConnectionString("DbConnection");
