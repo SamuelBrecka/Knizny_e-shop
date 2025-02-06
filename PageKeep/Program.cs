@@ -49,7 +49,7 @@ using (var scope = app.Services.CreateScope())
         var context = services.GetRequiredService<AppDbContext>();
         if (context.Database.GetPendingMigrations().Any())
         {
-            context.Database.Migrate(); // Apply migrations
+            context.Database.Migrate();
         }
     }
     catch (Exception ex)

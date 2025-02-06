@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using PageKeep.Models.Entities;
 
 namespace PageKeep.dbcontext
@@ -37,6 +38,27 @@ namespace PageKeep.dbcontext
                 .WithMany()
                 .HasForeignKey(r => r.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            SeedData(modelBuilder);
+        }
+
+        private void SeedData(ModelBuilder modelBuilder)
+        {
+            var admin = new UserAccount
+            {
+                Id = 1,
+                Username = "admin",
+                Email = "admin@example.com",
+                PasswordHash = HashPassword("admin"), 
+                Role = "Admin"
+            };
+            modelBuilder.Entity<UserAccount>().HasData(admin);
+        }
+
+        private string HashPassword(string password)
+        {
+            var _hasher = new PasswordHasher<UserAccount>();
+            return _hasher.HashPassword(null, password);
         }
     }
 }
