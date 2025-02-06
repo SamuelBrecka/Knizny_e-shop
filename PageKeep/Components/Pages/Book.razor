@@ -54,12 +54,11 @@
                         <h3>Pridať recenziu</h3>
                         <EditForm Model="@_newReviewModel" OnValidSubmit="SubmitReview" FormName="formAddReviewModel" Context="contextAddReview">
                             <DataAnnotationsValidator />
-                            <ValidationSummary />
 
                             <div class="form-group">
                                 <label for="content">Recenzia</label>
                                 <InputTextArea id="content" @bind-value="_newReviewModel.Content" class="form-control"/>
-                                <ValidationMessage For="() => _newReviewModel.Content" />
+                                <ValidationMessage For="() => _newReviewModel.Content" class="validation-errors" />
                             </div>
 
                             <button type="submit" class="btn btn-primary">Pridať recenziu</button>

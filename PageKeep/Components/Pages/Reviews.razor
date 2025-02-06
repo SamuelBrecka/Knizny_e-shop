@@ -28,7 +28,7 @@
 
                         <div class="form-group">
                             <textarea @bind="EditingReview.Content" class="edit-textarea form-control"></textarea>
-                            <ValidationMessage For="@(() => EditingReview.Content)" class="text-danger" />
+                            <ValidationMessage For="@(() => EditingReview.Content)" class="validation-errors" />
                         </div>
 
                         <div class="review-actions">

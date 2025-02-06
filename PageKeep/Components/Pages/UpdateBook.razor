@@ -22,30 +22,29 @@
                     <div class="edit-book-form">
                         <EditForm Model="@Book" OnValidSubmit="EditBook" FormName="FormUpdateBook">
                             <DataAnnotationsValidator />
-                            <ValidationSummary />
 
                             <div class="form-group">
                                 <label for="title">Názov</label>
                                 <InputText id="title" class="form-control" @bind-Value="Book.Title" placeholder="Zadajte názov knihy" />
-                                <ValidationMessage For="() => Book.Title" />
+                                <ValidationMessage For="() => Book.Title" class="validation-errors" />
                             </div>
 
                             <div class="form-group">
                                 <label for="author">Autor</label>
                                 <InputText id="author" class="form-control" @bind-Value="Book.Author" placeholder="Zadajte meno autora" />
-                                <ValidationMessage For="() => Book.Author" />
+                                <ValidationMessage For="() => Book.Author" class="validation-errors" />
                             </div>
 
                             <div class="form-group">
                                 <label for="price">Cena</label>
                                 <InputNumber id="price" class="form-control" @bind-Value="Book.Price" placeholder="Zadajte cenu" />
-                                <ValidationMessage For="() => Book.Price" />
+                                <ValidationMessage For="() => Book.Price" class="validation-errors" />
                             </div>
 
                             <div class="form-group">
                                 <label for="image">URL obrázka</label>
                                 <InputText id="image" class="form-control" @bind-Value="Book.Image" placeholder="Zadajte URL obrázka" />
-                                <ValidationMessage For="() => Book.Image" />
+                                <ValidationMessage For="() => Book.Image" class="validation-errors" />
                             </div>
                             
                             <div class="form-group">
@@ -57,7 +56,7 @@
                             <div class="form-group">
                                 <label for="description">Popis</label>
                                 <InputTextArea id="description" class="form-control" @bind-Value="Book.Description" placeholder="Zadajte popis knihy" />
-                                <ValidationMessage For="() => Book.Description" />
+                                <ValidationMessage For="() => Book.Description" class="validation-errors" />
                             </div>
                             
                             <div class="form-group">
