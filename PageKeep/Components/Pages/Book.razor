@@ -1,6 +1,7 @@
 ﻿@page "/book/{BookId:int}"
 
-@inject PageKeep.dbcontext.AppDbContext DbContext
+@inject dbcontext.AppDbContext DbContext
+@inject BookViewModel BookVM
 @inject NavigationManager NavManager
 @inject AuthenticationStateProvider AuthStateProvider
 @rendermode InteractiveServer
@@ -142,8 +143,7 @@ else
     {
         if (CurrentBook != null)
         {
-            DbContext.Books.Remove(CurrentBook);
-            await DbContext.SaveChangesAsync();
+            await BookVM.DeleteBookAsync(BookId);
             NavManager.NavigateTo("/");
         }
     }

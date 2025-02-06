@@ -1,7 +1,6 @@
 ﻿@page "/"
 
-@using Microsoft.EntityFrameworkCore
-@inject PageKeep.dbcontext.AppDbContext DbContext
+@inject BookViewModel BookVM
 
 <section id="home" class="home">
     <div class="container">
@@ -39,7 +38,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        books = await DbContext.Books.ToListAsync();
+        books = await BookVM.GetAllBooksAsync();
     }
 
     private string GetBookImage(BookModel book)

@@ -1,8 +1,9 @@
 ﻿@page "/edit-book/{BookId:int}"
-
+@using PageKeep.ViewModels
 @using PageKeep.dbcontext
-@using Microsoft.AspNetCore.Components.Authorization
-@using Microsoft.AspNetCore.Authorization
+
+
+@inject BookViewModel BookVM
 @inject AppDbContext DbContext
 @inject NavigationManager NavManager
 @inject AuthenticationStateProvider AuthStateProvider
@@ -110,7 +111,7 @@
             return;
         }
 
-        Book = await DbContext.Books.FindAsync(BookId);
+        Book = await BookVM.GetBookByIdAsync(BookId);
         Book.BookGenres = await DbContext.BookGenres.Where(bg => bg.BookId == BookId).ToListAsync();
 
         if (Book != null)
@@ -132,8 +133,7 @@
         if (Book != null)
         {
             Book.BookGenres = SelectedGenres.Select(gId => new BookGenreModel { GenreId = gId }).ToList();
-            DbContext.Books.Update(Book);
-            await DbContext.SaveChangesAsync();
+            await BookVM.UpdateBookAsync(Book);
 
             NavManager.NavigateTo("/");
         }

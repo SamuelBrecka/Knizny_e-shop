@@ -3,6 +3,7 @@
 @using System.Globalization
 
 @inject PageKeep.dbcontext.AppDbContext DbContext
+@inject BookViewModel BookVM
 @rendermode InteractiveServer
 
 
@@ -61,9 +62,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        books = await DbContext.Books.Include(b => b.BookGenres)
-                                     .ThenInclude(bg => bg.Genre)
-                                     .ToListAsync();
+        books = await BookVM.GetAllBooksAsync();
 
         genres = await DbContext.Genres.ToListAsync();
 
@@ -86,9 +85,9 @@
         filteredBooks = books
             .Where(b => (string.IsNullOrWhiteSpace(normalizedQuery) || 
                          RemoveDiacritics(b.Title).ToLower().Contains(normalizedQuery) || 
-                         RemoveDiacritics(b.Author).ToLower().Contains(normalizedQuery)) &&
-                        (selectedGenres.Count == 0 || b.BookGenres.Any(bg => selectedGenres.Contains(bg.Genre.Id))))
-            .ToList();
+                         RemoveDiacritics(b.Author).ToLower().Contains(normalizedQuery)) && 
+                         (selectedGenres.Count == 0 || b.BookGenres.Any(bg => selectedGenres.Contains(bg.Genre.Id))))
+                         .ToList();
     }
 
     private string RemoveDiacritics(string text)

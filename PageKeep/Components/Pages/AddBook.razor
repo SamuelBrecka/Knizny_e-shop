@@ -1,6 +1,8 @@
 ﻿@page "/add-book"
 
 @using PageKeep.dbcontext
+@using PageKeep.ViewModels
+@inject BookViewModel BookVM
 @inject AppDbContext DbContext
 @inject NavigationManager NavManager
 @inject AuthenticationStateProvider AuthStateProvider
@@ -91,7 +93,7 @@
 @code {
     private BookModel Book { get; set; } = new();
     private List<GenreModel> Genres = new();
-    private List<int> selectedGenres = new();    
+    private List<int> selectedGenres = new();
     private string? SuccessMessage;
 
     protected override async Task OnInitializedAsync()
@@ -134,8 +136,7 @@
     {
         Book.BookGenres = selectedGenres.Select(gId => new BookGenreModel { GenreId = gId }).ToList();
 
-        DbContext.Books.Add(Book);
-        await DbContext.SaveChangesAsync();
+        await BookVM.AddBookAsync(Book); 
         NavigateBack("books");
     }
 
