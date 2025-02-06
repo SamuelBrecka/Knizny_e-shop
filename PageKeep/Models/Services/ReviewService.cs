@@ -3,15 +3,15 @@ using Microsoft.EntityFrameworkCore;
 using PageKeep.dbcontext;
 using PageKeep.Models.Entities;
 
-namespace PageKeep.Models.ViewModels
+namespace PageKeep.Models.Services
 {
-    public class ReviewViewModel
+    public class ReviewService
     {
         private readonly AppDbContext _dbContext;
 
         public ReviewModel NewReview { get; set; } = new();
 
-        public ReviewViewModel(AppDbContext dbContext)
+        public ReviewService(AppDbContext dbContext)
         {
             _dbContext = dbContext;
         }

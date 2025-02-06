@@ -2,13 +2,13 @@
 using PageKeep.Models.Entities;
 using PageKeep.dbcontext;
 
-namespace PageKeep.Models.ViewModels
+namespace PageKeep.Models.Services
 {
-    public class BookViewModel
+    public class BookService
     {
         private readonly AppDbContext _dbContext;
 
-        public BookViewModel(AppDbContext dbContext)
+        public BookService(AppDbContext dbContext)
         {
             _dbContext = dbContext;
         }

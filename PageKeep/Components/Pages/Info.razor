@@ -1,7 +1,5 @@
 ﻿@page "/info"
-@inject PageKeep.dbcontext.AppDbContext DbContext
-@inject NavigationManager NavManager
-@rendermode InteractiveServer
+@inject BookService BookService
 
 
 <div class="intro">
@@ -44,7 +42,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var books = await DbContext.Books.ToListAsync();
+        var books = await BookService.GetAllBooksAsync();
 
         if (books.Any())
         {

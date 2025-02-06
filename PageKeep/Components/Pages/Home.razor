@@ -1,6 +1,6 @@
 ﻿@page "/"
 
-@inject BookViewModel BookVM
+@inject BookService BookService
 
 <section id="home" class="home">
     <div class="container">
@@ -38,7 +38,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        books = await BookVM.GetAllBooksAsync();
+        books = await BookService.GetAllBooksAsync();
     }
 
     private string GetBookImage(BookModel book)

@@ -1,9 +1,9 @@
 ﻿@page "/book/{BookId:int}"
 
 @inject dbcontext.AppDbContext DbContext
-@inject BookViewModel BookVM
+@inject BookService BookService
 @inject NavigationManager NavManager
-@inject ReviewViewModel ReviewVM
+@inject ReviewService ReviewService
 @inject AuthenticationStateProvider AuthStateProvider
 @rendermode InteractiveServer
 
@@ -118,8 +118,8 @@ else
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
 
-        CurrentBook = await BookVM.GetBookByIdAsync(BookId);
-        Reviews = await ReviewVM.GetReviewsAsync(BookId);
+        CurrentBook = await BookService.GetBookByIdAsync(BookId);
+        Reviews = await ReviewService.GetReviewsAsync(BookId);
 
         if (user.Identity.IsAuthenticated)
         {
@@ -137,7 +137,7 @@ else
     {
         if (CurrentBook != null)
         {
-            await BookVM.DeleteBookAsync(BookId);
+            await BookService.DeleteBookAsync(BookId);
             NavManager.NavigateTo("/");
         }
     }
@@ -151,8 +151,8 @@ else
             ReviewerName = CurrentUser.Username,
             Content = _newReviewModel.Content,
         };
-        await ReviewVM.AddReviewAsync(review);
-        Reviews = await ReviewVM.GetReviewsAsync(BookId);
+        await ReviewService.AddReviewAsync(review);
+        Reviews = await ReviewService.GetReviewsAsync(BookId);
     }
 
     private void NavigateToAllReviews()

@@ -1,7 +1,7 @@
 ﻿@page "/reviews/{BookId:int}"
 
 @inject dbcontext.AppDbContext DbContext
-@inject ReviewViewModel ReviewVM
+@inject ReviewService ReviewService
 @inject AuthenticationStateProvider AuthStateProvider
 @rendermode InteractiveServer
 
@@ -82,7 +82,7 @@
             string username = user.Identity.Name;
             CurrentUser = await DbContext.Users.FirstOrDefaultAsync(u => u.Username == username);
         }
-        ReviewList = await ReviewVM.GetReviewsAsync(BookId);
+        ReviewList = await ReviewService.GetReviewsAsync(BookId);
     }
 
     private void StartEditing(ReviewModel review)
@@ -99,7 +99,7 @@
 
     private async Task SaveEditedReview()
     {
-        await ReviewVM.EditReviewAsync(EditingReview.Id, EditingReview.Content, EditingReview.UserId);
+        await ReviewService.EditReviewAsync(EditingReview.Id, EditingReview.Content, EditingReview.UserId);
         EditingReviewId = null;
         EditingReview = new();
     }
@@ -112,7 +112,7 @@
 
     private async Task DeleteReview(int reviewId)
     {
-        await ReviewVM.DeleteReviewAsync(reviewId);
-        ReviewList = await ReviewVM.GetReviewsAsync(BookId);
+        await ReviewService.DeleteReviewAsync(reviewId);
+        ReviewList = await ReviewService.GetReviewsAsync(BookId);
     }
 }

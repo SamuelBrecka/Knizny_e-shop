@@ -2,8 +2,8 @@
 @using System.Text
 @using System.Globalization
 
-@inject BookViewModel BookVM
-@inject GenreViewModel GenreVM
+@inject BookService BookService
+@inject GenreService GenreService
 @rendermode InteractiveServer
 
 
@@ -62,9 +62,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        books = await BookVM.GetAllBooksAsync();
+        books = await BookService.GetAllBooksAsync();
 
-        genres = await GenreVM.GetGenresAsync();
+        genres = await GenreService.GetGenresAsync();
 
         FilterBooks();
     }

@@ -3,8 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PageKeep.Components;
 using PageKeep.dbcontext;
-using PageKeep.Models.ViewModels;
-using System;
+using PageKeep.Models.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,9 +20,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 builder.Services.AddAuthorization();
 builder.Services.AddCascadingAuthenticationState();
-builder.Services.AddScoped<BookViewModel>();
-builder.Services.AddScoped<GenreViewModel>();
-builder.Services.AddScoped<ReviewViewModel>();
+builder.Services.AddScoped<BookService>();
+builder.Services.AddScoped<GenreService>();
+builder.Services.AddScoped<ReviewService>();
 
 
 var connectionString = builder.Configuration.GetConnectionString("DbConnection");

@@ -1,15 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PageKeep.dbcontext;
 
-namespace PageKeep.Models.ViewModels
+namespace PageKeep.Models.Services
 {
-    public class GenreViewModel
+    public class GenreService
     {
         private readonly AppDbContext _dbContext;
 
         public List<GenreModel> Genres { get; private set; } = new();
 
-        public GenreViewModel(AppDbContext dbContext)
+        public GenreService(AppDbContext dbContext)
         {
             _dbContext = dbContext;
         }

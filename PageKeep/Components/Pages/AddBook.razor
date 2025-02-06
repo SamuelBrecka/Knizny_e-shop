@@ -1,7 +1,7 @@
 ﻿@page "/add-book"
 
-@inject BookViewModel BookVM
-@inject GenreViewModel GenreVM
+@inject BookService BookService
+@inject GenreService GenreService
 @inject NavigationManager NavManager
 @inject AuthenticationStateProvider AuthStateProvider
 @rendermode InteractiveServer
@@ -96,7 +96,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Genres = await GenreVM.GetGenresAsync();
+        Genres = await GenreService.GetGenresAsync();
 
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
@@ -134,7 +134,7 @@
     {
         Book.BookGenres = selectedGenres.Select(gId => new BookGenreModel { GenreId = gId }).ToList();
 
-        await BookVM.AddBookAsync(Book); 
+        await BookService.AddBookAsync(Book); 
         NavigateBack("books");
     }
 
