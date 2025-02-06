@@ -13,45 +13,44 @@
                 <h2>Pridať knihu</h2>
                 <div class="edit-book-form">
                     <EditForm Model="@Book" OnValidSubmit="BookAdd" FormName="FormAddBook">
-                        <DataAnnotationsValidator />
-                        <ValidationSummary />
+                        <ValidationSummary/>
 
                         <div class="form-group">
                             <label for="title">Názov</label>
-                            <InputText id="title" class="form-control" @bind-Value="Book.Title" placeholder="Zadajte názov knihy" />
-                            <ValidationMessage For="() => Book.Title" />
+                            <InputText id="title" class="form-control" @bind-Value="Book.Title" placeholder="Zadajte názov knihy"/>
+                            <ValidationMessage For="() => Book.Title"/>
                         </div>
 
                         <div class="form-group">
                             <label for="author">Autor</label>
-                            <InputText id="author" class="form-control" @bind-Value="Book.Author" placeholder="Zadajte meno autora" />
-                            <ValidationMessage For="() => Book.Author" />
+                            <InputText id="author" class="form-control" @bind-Value="Book.Author" placeholder="Zadajte meno autora"/>
+                            <ValidationMessage For="() => Book.Author"/>
                         </div>
 
                         <div class="form-group">
                             <label for="price">Cena</label>
-                            <InputNumber id="price" class="form-control" @bind-Value="Book.Price" placeholder="Zadajte cenu" />
-                            <ValidationMessage For="() => Book.Price" />
+                            <InputNumber id="price" class="form-control" @bind-Value="Book.Price" placeholder="Zadajte cenu"/>
+                            <ValidationMessage For="() => Book.Price"/>
                         </div>
-                        
-                        
+
+
                         <div class="form-group">
                             <label for="image">URL obrázka</label>
-                            <InputText id="image" class="form-control" @bind-Value="Book.Image" placeholder="Zadajte URL obrázka" />
-                            <ValidationMessage For="() => Book.Image" />
-                        </div> 
-                        
+                            <InputText id="image" class="form-control" @bind-Value="Book.Image" placeholder="Zadajte URL obrázka"/>
+                            <ValidationMessage For="() => Book.Image"/>
+                        </div>
+
                         <div class="form-group">
                             <label for="imageUpload">Nahrať obrázok (.jpg, .jpeg)</label>
-                            <InputFile OnChange="HandleFileUpload" accept=".jpg,.jpeg" />
+                            <InputFile OnChange="HandleFileUpload" accept=".jpg,.jpeg"/>
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="description">Popis</label>
-                            <InputTextArea id="description" class="form-control" @bind-Value="Book.Description" placeholder="Zadajte popis knihy" />
-                            <ValidationMessage For="() => Book.Description" />
+                            <InputTextArea id="description" class="form-control" @bind-Value="Book.Description" placeholder="Zadajte popis knihy"/>
+                            <ValidationMessage For="() => Book.Description"/>
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="genre">Žáner knihy</label>
                             <div class="genre-checkboxes">
@@ -60,7 +59,7 @@
                                     <div class="checkbox-item">
                                         <input type="checkbox" id="genre-@genre.Id" value="@genre.Id"
                                                checked="@selectedGenres.Contains(genre.Id)"
-                                               @onchange="e => ToggleGenre(genre.Id, e.Value.ToString())" />
+                                               @onchange="e => ToggleGenre(genre.Id, e.Value.ToString())"/>
                                         <label for="genre-@genre.Id">@genre.Name</label>
                                     </div>
                                 }
@@ -69,7 +68,7 @@
 
                         <div class="form-actions">
                             <button type="submit" class="add-button">Pridať knihu</button>
-                            <button type="button" class="btn btn-secondary" @onclick="NavigateBack">Zrušiť</button>
+                            <button type="button" class="btn btn-secondary" @onclick='() => NavigateBack("books")'>Zrušiť</button>
                         </div>
                     </EditForm>
 
@@ -137,8 +136,12 @@
 
         DbContext.Books.Add(Book);
         await DbContext.SaveChangesAsync();
-        Book = new BookModel();
-        NavigateBack();
+        NavigateBack("books");
+    }
+
+    private void NavigateBack(string where)
+    {
+        NavManager.NavigateTo($"/{where}");
     }
 
     private void NavigateBack()
