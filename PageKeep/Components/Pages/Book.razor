@@ -8,26 +8,26 @@
 @inject AuthenticationStateProvider AuthStateProvider
 @rendermode InteractiveServer
 
-@if (CurrentBook != null)
+@if (_currentBook != null)
 {
     <div class="page-container">
         <div class="side-panel left"></div>
         <div class="main-content">
             <div class="container-book">
                 <div class="book-image-container">
-                    <img src="@CurrentBook.Image" alt="@CurrentBook.Title" />
+                    <img src="@GetBookImageUrl()" alt="@_currentBook.Title" />
                 </div>
                 <div class="text-container">
-                    <h2>@CurrentBook.Title</h2>
-                    <p>Autor: @CurrentBook.Author</p>
-                    <p>@CurrentBook.Description</p>
-                    <button class="buy-button">Kúpiť za @CurrentBook.Price €</button>
+                    <h2>@_currentBook.Title</h2>
+                    <p>Autor: @_currentBook.Author</p>
+                    <p>@_currentBook.Description</p>
+                    <button class="buy-button">Kúpiť za @_currentBook.Price €</button>
                     <div class="genres">
                         <h3>Žánre</h3>
-                        @if (CurrentBook.BookGenres != null && CurrentBook.BookGenres.Any())
+                        @if (_currentBook.BookGenres.Any())
                         {
                             <ul>
-                                @foreach (var bookGenre in CurrentBook.BookGenres)
+                                @foreach (var bookGenre in _currentBook.BookGenres)
                                 {
                                     <li>@bookGenre.Genre.Name</li>
                                 }
@@ -71,19 +71,22 @@
 
             <div class="reviews">
                 <h3>Recenzie</h3>
-                @if (Reviews == null || !Reviews.Any())
+                @if (_reviews != null && !_reviews.Any())
                 {
                     <p>Zatiaľ nie sú k dispozícii žiadne recenzie.</p>
                 }
                 else
                 {
-                    @foreach (var review in Reviews.Take(3))
+                    @if (_reviews != null)
                     {
-                        <div class="review">
-                            <h4>@review.ReviewerName</h4>
-                            <p>@review.Content</p>
-                            <small>@review.CreatedAt.ToString("d. MMM yyyy")</small>
-                        </div>
+                        foreach (var review in _reviews.Take(3))
+                        {
+                            <div class="review">
+                                <h4>@review.ReviewerName</h4>
+                                <p>@review.Content</p>
+                                <small>@review.CreatedAt.ToString("d. MMM yyyy")</small>
+                            </div>
+                        }
                     }
                 }
             </div>
@@ -107,10 +110,10 @@ else
 @code {
     [Parameter]
     public int BookId { get; set; }
-    private UserAccount? CurrentUser;
-    private BookModel? CurrentBook;
+    private UserAccount? _currentUser;
+    private BookModel? _currentBook;
 
-    private List<ReviewModel> Reviews;
+    private List<ReviewModel>? _reviews;
     private ReviewModel _newReviewModel = new();
 
     protected override async Task OnInitializedAsync()
@@ -118,15 +121,32 @@ else
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
 
-        CurrentBook = await BookService.GetBookByIdAsync(BookId);
-        Reviews = await ReviewService.GetReviewsAsync(BookId);
+        _currentBook = await BookService.GetBookByIdAsync(BookId);
+        _reviews = await ReviewService.GetReviewsAsync(BookId);
 
-        if (user.Identity.IsAuthenticated)
+        if (user.Identity != null && user.Identity.IsAuthenticated)
         {
-            string username = user.Identity.Name;
-            CurrentUser = await DbContext.Users.FirstOrDefaultAsync(u => u.Username == username);
+            string? username = user.Identity.Name;
+            _currentUser = await DbContext.Users.FirstOrDefaultAsync(u => u.Username == username);
         }
     }
+
+
+    private string GetBookImageUrl()
+    {
+        if (_currentBook?.ImageFile != null && _currentBook.ImageFile.Length > 0)
+        {
+            return $"data:image/jpeg;base64,{Convert.ToBase64String(_currentBook.ImageFile)}";
+        }
+
+        if (!string.IsNullOrEmpty(_currentBook?.Image))
+        {
+            return _currentBook.Image;
+        }
+
+        return "placeholder_image_url";
+    }
+
 
     private void NavigateToEditBook()
     {
@@ -135,7 +155,7 @@ else
 
     private async Task DeleteBook()
     {
-        if (CurrentBook != null)
+        if (_currentBook != null)
         {
             await BookService.DeleteBookAsync(BookId);
             NavManager.NavigateTo("/");
@@ -144,15 +164,19 @@ else
 
     private async Task SubmitReview()
     {
-        var review = new ReviewModel
+        if (_currentUser != null)
+        {
+            var review = new ReviewModel
             {
                 BookId = BookId,
-                UserId = CurrentUser.Id,
-                ReviewerName = CurrentUser.Username,
+                UserId = _currentUser.Id,
+                ReviewerName = _currentUser.Username,
                 Content = _newReviewModel.Content,
             };
-        await ReviewService.AddReviewAsync(review);
-        Reviews = await ReviewService.GetReviewsAsync(BookId);
+            await ReviewService.AddReviewAsync(review);
+        }
+
+        _reviews = await ReviewService.GetReviewsAsync(BookId);
     }
 
     private void NavigateToAllReviews()

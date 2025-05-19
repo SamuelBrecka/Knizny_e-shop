@@ -21,7 +21,7 @@ namespace PageKeep.Services
                 .ToListAsync();
         }
 
-        public async Task<BookModel> GetBookByIdAsync(int id)
+        public async Task<BookModel?> GetBookByIdAsync(int id)
         {
             return await _dbContext.Books
                 .Include(b => b.BookGenres)
@@ -34,9 +34,9 @@ namespace PageKeep.Services
             return await _dbContext.BookGenres.Where(bg => bg.BookId == bookId).ToListAsync();
         }
 
-        public async Task AddBookAsync(BookModel book)
+        public async Task AddBookAsync(BookModel? book)
         {
-            _dbContext.Books.Add(book);
+            if (book != null) _dbContext.Books.Add(book);
             await _dbContext.SaveChangesAsync();
         }
 

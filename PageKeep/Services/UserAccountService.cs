@@ -1,5 +1,6 @@
 ﻿using PageKeep.dbcontext;
 using PageKeep.Models;
+using PageKeep.ViewModels;
 
 namespace PageKeep.Services
 {
@@ -32,9 +33,9 @@ namespace PageKeep.Services
             return existingUser != null;
         }
 
-        public async Task<UserAccount> GetUserByNameAsyc(string username)
+        public Task<UserAccount?> GetUserByNameAsyc(string? username)
         {
-            return _dbContext.Users.Where(i => i.Username == username).FirstOrDefault();
+            return Task.FromResult(_dbContext.Users.Where(i => i.Username == username).FirstOrDefault());
         }
     }
 }

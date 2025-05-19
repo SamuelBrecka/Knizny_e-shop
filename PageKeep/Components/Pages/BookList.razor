@@ -69,7 +69,7 @@
         FilterBooks();
     }
 
-    private string GetBookImage(BookModel book)
+    private string? GetBookImage(BookModel book)
     {
         if (book.ImageFile != null)
         {
@@ -80,7 +80,7 @@
 
     private void FilterBooks()
     {
-        string normalizedQuery = RemoveDiacritics(searchQuery)?.ToLower();
+        string? normalizedQuery = RemoveDiacritics(searchQuery)?.ToLower();
 
         filteredBooks = books
             .Where(b => (string.IsNullOrWhiteSpace(normalizedQuery) || 

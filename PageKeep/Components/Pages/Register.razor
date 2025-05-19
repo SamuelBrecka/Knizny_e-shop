@@ -4,6 +4,8 @@
 @using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Authentication.Cookies
 @using PageKeep.Services
+@using PageKeep.Utils
+@using PageKeep.ViewModels
 @inject UserAccountService UserAccountService
 @inject NavigationManager navManager
 
@@ -85,7 +87,7 @@
 
         var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
         var principal = new ClaimsPrincipal(identity);
-        await HttpContext.SignInAsync(principal);
+        if (HttpContext != null) await HttpContext.SignInAsync(principal);
 
         navManager.NavigateTo("/");
     }

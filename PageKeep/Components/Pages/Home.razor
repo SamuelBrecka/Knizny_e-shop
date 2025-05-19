@@ -42,7 +42,7 @@
         books = await BookService.GetAllBooksAsync();
     }
 
-    private string GetBookImage(BookModel book)
+    private string? GetBookImage(BookModel book)
     {
         if (book.ImageFile != null)
         {

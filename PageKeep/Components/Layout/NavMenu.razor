@@ -5,7 +5,7 @@
             <AuthorizeView>
                 <Authorized>
                     <a href="/logout">Logout</a>
-                    <div class="user-message">@message</div>
+                    <div class="user-message">@_message</div>
                 </Authorized>
                 <NotAuthorized>
                     <a href="/login">Login</a>
@@ -29,17 +29,20 @@
 </div>
 
 @code {
-    private string? message;
+    private string? _message;
 
     [CascadingParameter]
-    private Task<AuthenticationState> authStateTask { get; set; }
+    private Task<AuthenticationState>? AuthStateTask { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        var authState = await authStateTask;
-        if (authState.User.Identity?.IsAuthenticated == true)
+        if (AuthStateTask != null)
         {
-            message = $"Ahoj {authState.User.Identity.Name}\nVitajte späť!";
+            var authState = await AuthStateTask;
+            if (authState.User.Identity?.IsAuthenticated == true)
+            {
+                _message = $"Ahoj {authState.User.Identity.Name}\nVitajte späť!";
+            }
         }
     }
 }

@@ -1,10 +1,11 @@
-﻿namespace PageKeep.Models;
-
-public class BookGenreModel
+﻿namespace PageKeep.Models
 {
-    public int BookId { get; set; }
-    public BookModel Book { get; set; }
+    public class BookGenreModel
+    {
+        public int BookId { get; set; }
+        public BookModel Book { get; set; } = null!;
 
-    public int GenreId { get; set; }
-    public GenreModel Genre { get; set; }
+        public int GenreId { get; set; }
+        public GenreModel Genre { get; set; } = null!;
+    }
 }

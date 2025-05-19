@@ -12,15 +12,16 @@ namespace PageKeep.Models
         public int BookId { get; set; }
 
         [ForeignKey("BookId")]
-        public BookModel Book { get; set; }
+        public BookModel Book { get; set; } = null!;
 
         [ForeignKey("User")]
         public int UserId { get; set; }
+
         public UserAccount? User { get; set; }
 
-        [Required(ErrorMessage = "Pole Receniza nemôže byť prázdne")]
+        [Required(ErrorMessage = "Pole Recenzia nemôže byť prázdne")]
         [MaxLength(500)]
-        public string Content { get; set; }
+        public string Content { get; set; } = string.Empty;
 
         [MaxLength(100)]
         public string? ReviewerName { get; set; }

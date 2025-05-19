@@ -66,7 +66,7 @@
                                         <div class="checkbox-item">
                                             <input type="checkbox" id="genre-@genre.Id" value="@genre.Id"
                                                    checked="@SelectedGenres.Contains(genre.Id)"
-                                                   @onchange="e => ToggleGenre(genre.Id, e.Value.ToString())" />
+                                                   @onchange="e => ToggleGenre(genre.Id, e.Value?.ToString())" />
                                             <label for="genre-@genre.Id">@genre.Name</label>
                                         </div>
                                     }
@@ -110,20 +110,21 @@
         }
 
         Book = await BookService.GetBookByIdAsync(BookId);
-        Book.BookGenres = await BookService.GetBookGenresById(BookId);
-
         if (Book != null)
         {
-            Genres = await GenreService.GetGenresAsync();
-            SelectedGenres = Book.BookGenres.Select(bg => bg.GenreId).ToList();
-        }
+            Book.BookGenres = await BookService.GetBookGenresById(BookId);
 
-        if (Book == null)
-        {
-            NavManager.NavigateTo("/");
-        }
+            if (Book != null)
+            {
+                Genres = await GenreService.GetGenresAsync();
+                SelectedGenres = Book.BookGenres.Select(bg => bg.GenreId).ToList();
+            }
 
-        
+            if (Book == null)
+            {
+                NavManager.NavigateTo("/");
+            }
+        }
     }
 
     private async Task EditBook()
@@ -140,15 +141,14 @@
     private async Task HandleFileUpload(InputFileChangeEventArgs e)
     {
         var file = e.File;
-        if (file != null)
         {
             using var stream = new MemoryStream();
             await file.OpenReadStream().CopyToAsync(stream);
-            Book.ImageFile = stream.ToArray();
+            if (Book != null) Book.ImageFile = stream.ToArray();
         }
     }
 
-    private void ToggleGenre(int genreId, string value)
+    private void ToggleGenre(int genreId, string? value)
     {
         if (SelectedGenres.Contains(genreId))
         {

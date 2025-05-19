@@ -4,6 +4,7 @@
 @using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Authentication.Cookies
 @using PageKeep.Services
+@using PageKeep.Utils
 @inject UserAccountService UserAccountService
 @inject NavigationManager navManager
 
@@ -50,21 +51,28 @@
     private async Task Authenticate()
     {
         var acc = await UserAccountService.GetUserByNameAsyc(Model.UserName);
-        if (acc is null || !PasswordHasher.VerifyPassword(acc.PasswordHash, Model.Password))
+        if (Model.Password != null && !PasswordHasher.VerifyPassword(acc?.PasswordHash, Model.Password))
         {
             errorMessage = "Neplatne meno alebo heslo";
             return;
         }
 
-        var claim = new List<Claim>
+        if (Model.UserName != null)
         {
-            new Claim(ClaimTypes.Name, Model.UserName),
-            new Claim(ClaimTypes.Role, acc.Role)
-        };
+            if (acc != null)
+            {
+                var claim = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, Model.UserName),
+                    new Claim(ClaimTypes.Role, acc.Role)
+                };
 
-        var identity = new ClaimsIdentity(claim, CookieAuthenticationDefaults.AuthenticationScheme);
-        var principal = new ClaimsPrincipal(identity);
-        await HttpContext.SignInAsync(principal);
+                var identity = new ClaimsIdentity(claim, CookieAuthenticationDefaults.AuthenticationScheme);
+                var principal = new ClaimsPrincipal(identity);
+                if (HttpContext != null) await HttpContext.SignInAsync(principal);
+            }
+        }
+
         navManager.NavigateTo("/");
     }
 }

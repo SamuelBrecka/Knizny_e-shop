@@ -10,27 +10,27 @@
 
 <div class="review-grid">
 
-    @if (ReviewList == null || !ReviewList.Any())
+    @if (_reviewList == null || !_reviewList.Any())
     {
         <p>Zatiaľ nie sú k dispozícii žiadne recenzie.</p>
     }
     else
     {
-        @foreach (var review in ReviewList)
+        @foreach (var review in _reviewList)
         {
             <div class="review-card">
                 <div class="review-header">
                     <h4>@review.ReviewerName</h4>
                 </div>
 
-                @if (review.Id == EditingReviewId)
+                @if (review.Id == _editingReviewId)
                 {
-                    <EditForm Model="@EditingReview" OnValidSubmit="SaveEditedReview">
+                    <EditForm Model="@_editingReview" OnValidSubmit="SaveEditedReview">
                         <DataAnnotationsValidator />
 
                         <div class="form-group">
-                            <textarea @bind="EditingReview.Content" class="edit-textarea form-control"></textarea>
-                            <ValidationMessage For="@(() => EditingReview.Content)" class="validation-errors" />
+                            <textarea @bind="_editingReview.Content" class="edit-textarea form-control"></textarea>
+                            <ValidationMessage For="@(() => _editingReview.Content)" class="validation-errors" />
                         </div>
 
                         <div class="review-actions">
@@ -45,12 +45,12 @@
                         <p>@review.Content</p>
                         <small>@review.CreatedAt.ToString("d. MMM yyyy")</small>
 
-                        @if (CurrentUser != null)
+                        @if (_currentUser != null)
                         {
-                            @if (review.UserId == CurrentUser.Id || CurrentUser.Role == "Admin")
+                            @if (review.UserId == _currentUser.Id || _currentUser.Role == "Admin")
                             {
                                 <div class="review-actions">
-                                    @if (CurrentUser.Role == "User")
+                                    @if (_currentUser.Role == "User")
                                     {
                                         <button class="btn-edit-review" @onclick="() => StartEditing(review)">Upraviť</button>
                                     }
@@ -67,29 +67,28 @@
 @code {
     [Parameter]
     public int BookId { get; set; }
-    private List<ReviewModel> ReviewList = new();
-    private ReviewModel EditingReview = new();
-    private UserAccount? CurrentUser;
-    private int? EditingReviewId = null;
-    private string EditingReviewContent = "";
+    private List<ReviewModel>? _reviewList = new();
+    private ReviewModel _editingReview = new();
+    private UserAccount? _currentUser;
+    private int? _editingReviewId = null;
 
     protected override async Task OnInitializedAsync()
     {
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
 
-        if (user.Identity.IsAuthenticated)
+        if (user.Identity != null && user.Identity.IsAuthenticated)
         {
-            string username = user.Identity.Name;
-            CurrentUser = await UserAccountService.GetUserByNameAsyc(username);
+            string? username = user.Identity.Name;
+            _currentUser = await UserAccountService.GetUserByNameAsyc(username);
         }
-        ReviewList = await ReviewService.GetReviewsAsync(BookId);
+        _reviewList = await ReviewService.GetReviewsAsync(BookId);
     }
 
     private void StartEditing(ReviewModel review)
     {
-        EditingReviewId = review.Id;
-        EditingReview = new ReviewModel()
+        _editingReviewId = review.Id;
+        _editingReview = new ReviewModel()
             {
                 Id = review.Id,
                 Content = review.Content,
@@ -100,20 +99,19 @@
 
     private async Task SaveEditedReview()
     {
-        await ReviewService.EditReviewAsync(EditingReview.Id, EditingReview.Content, EditingReview.UserId);
-        EditingReviewId = null;
-        EditingReview = new();
+        await ReviewService.EditReviewAsync(_editingReview.Id, _editingReview.Content, _editingReview.UserId);
+        _editingReviewId = null;
+        _editingReview = new();
     }
 
     private void CancelEdit()
     {
-        EditingReviewId = null;
-        EditingReviewContent = "";
+        _editingReviewId = null;
     }
 
     private async Task DeleteReview(int reviewId)
     {
         await ReviewService.DeleteReviewAsync(reviewId);
-        ReviewList = await ReviewService.GetReviewsAsync(BookId);
+        _reviewList = await ReviewService.GetReviewsAsync(BookId);
     }
 }

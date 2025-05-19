@@ -18,6 +18,10 @@
 
                         <div class="form-group">
                             <label for="title">Názov</label>
+
+                            @{
+                                System.Diagnostics.Debug.Assert(Book != null, nameof(Book) + " != null");
+                            }
                             <InputText id="title" class="form-control" @bind-Value="Book.Title" placeholder="Zadajte názov knihy" />
                             <ValidationMessage For="() => Book.Title" class="validation-errors" />
                         </div>
@@ -42,8 +46,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="imageUpload">Nahrať obrázok (.jpg, .jpeg)</label>
-                            <InputFile OnChange="HandleFileUpload" accept=".jpg,.jpeg" />
+                            <label for="imageUpload">Nahrať obrázok (.png, .jpg, .jpeg)</label>
+                            <InputFile OnChange="HandleFileUpload" accept=".jpg,.jpeg,.png" />
                         </div>
 
                         <div class="form-group">
@@ -55,12 +59,12 @@
                         <div class="form-group">
                             <label for="genre">Žáner knihy</label>
                             <div class="genre-checkboxes">
-                                @foreach (var genre in Genres)
+                                @foreach (var genre in _genres)
                                 {
                                     <div class="checkbox-item">
                                         <input type="checkbox" id="genre-@genre.Id" value="@genre.Id"
-                                               checked="@selectedGenres.Contains(genre.Id)"
-                                               @onchange="e => ToggleGenre(genre.Id, e.Value.ToString())" />
+                                               checked="@_selectedGenres.Contains(genre.Id)"
+                                               @onchange="e => ToggleGenre(genre.Id, e.Value?.ToString())" />
                                         <label for="genre-@genre.Id">@genre.Name</label>
                                     </div>
                                 }
@@ -72,11 +76,6 @@
                             <button type="button" class="btn btn-secondary" @onclick='() => NavigateBack("books")'>Zrušiť</button>
                         </div>
                     </EditForm>
-
-                    @if (!string.IsNullOrEmpty(SuccessMessage))
-                    {
-                        <div class="alert alert-success mt-3">@SuccessMessage</div>
-                    }
                 </div>
             </div>
         </section>
@@ -90,14 +89,13 @@
 </AuthorizeView>
 
 @code {
-    private BookModel Book { get; set; } = new();
-    private List<GenreModel> Genres = new();
-    private List<int> selectedGenres = new();
-    private string? SuccessMessage;
+    private BookModel? Book { get; set; } = new();
+    private List<GenreModel> _genres = new();
+    private readonly List<int> _selectedGenres = new();
 
     protected override async Task OnInitializedAsync()
     {
-        Genres = await GenreService.GetGenresAsync();
+        _genres = await GenreService.GetGenresAsync();
 
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
@@ -108,34 +106,37 @@
         }
     }
 
-    private void ToggleGenre(int genreId, string value)
+    private void ToggleGenre(int genreId, string? value)
     {
-        if (selectedGenres.Contains(genreId))
+        if (_selectedGenres.Contains(genreId))
         {
-            selectedGenres.Remove(genreId);
+            _selectedGenres.Remove(genreId);
         }
         else
         {
-            selectedGenres.Add(genreId);
+            _selectedGenres.Add(genreId);
         }
     }
 
     private async Task HandleFileUpload(InputFileChangeEventArgs e)
     {
         var file = e.File;
-        if (file != null)
         {
             using var stream = new MemoryStream();
             await file.OpenReadStream().CopyToAsync(stream);
-            Book.ImageFile = stream.ToArray();
+            if (Book != null) Book.ImageFile = stream.ToArray();
         }
     }
 
     private async Task BookAdd()
     {
-        Book.BookGenres = selectedGenres.Select(gId => new BookGenreModel { GenreId = gId }).ToList();
+        if (Book != null)
+        {
+            Book.BookGenres = _selectedGenres.Select(gId => new BookGenreModel { GenreId = gId }).ToList();
 
-        await BookService.AddBookAsync(Book);
+            await BookService.AddBookAsync(Book);
+        }
+
         NavigateBack("books");
     }
 

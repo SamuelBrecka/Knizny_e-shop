@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
 
-    @if (!IsLoginPage)
+    @if (!_isLoginPage)
     {
         <header>
             <NavMenu/>
@@ -12,14 +12,15 @@
     </main>
 
 @code {
-    private bool IsLoginPage;
+    [Inject]
+    private NavigationManager? NavManager { get; set; }
+    private bool _isLoginPage;
 
     protected override void OnParametersSet()
     {
-        var currentUri = navManager.Uri;
-        IsLoginPage = currentUri.Contains("/login", StringComparison.OrdinalIgnoreCase);
+        var currentUri = NavManager?.Uri;
+        if (currentUri != null) _isLoginPage = currentUri.Contains("/login", StringComparison.OrdinalIgnoreCase);
     }
 
-    [Inject]
-    private NavigationManager navManager { get; set; }
+    
 }

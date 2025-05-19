@@ -15,7 +15,7 @@ namespace PageKeep.Services
             _dbContext = dbContext;
         }
 
-        public async Task<List<ReviewModel>> GetReviewsAsync(int bookId)
+        public async Task<List<ReviewModel>?> GetReviewsAsync(int bookId)
         {
             return await _dbContext.Reviews
                 .Where(r => r.BookId == bookId)
@@ -42,7 +42,7 @@ namespace PageKeep.Services
         {
             var review = await _dbContext.Reviews.FindAsync(reviewId);
 
-            _dbContext.Reviews.Remove(review);
+            if (review != null) _dbContext.Reviews.Remove(review);
             await _dbContext.SaveChangesAsync();
         }
     }
